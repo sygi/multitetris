@@ -43,7 +43,7 @@ def make_state(board, addr):
 
 def client_reader(game, addr, sock):
     with global_lock:
-        game.player_connected(addr)
+        game.add_player(addr)
     while True:
         move = sock.recv(1)
         if not move:
