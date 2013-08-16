@@ -4,7 +4,7 @@ class Game(object):
     def __init__(self):
         pass
 
-    def player_connected(self, player_id):
+    def add_player(self, player_id):
         '''
         Called when player connects.
         - player_id - opaque value
@@ -22,7 +22,19 @@ class Game(object):
             pos = [10, 10]
             player_id = ('localhost', 12)
         return [FakeBrick()]
-
+    
+    def get_points(self):
+        '''
+        Returns list of players' points
+        '''
+        print 'POINTS GOT'
+    
+    def start(self):
+        '''
+        Called when game starts, before any ticks.
+        '''
+        print 'START'
+    
     def move(self, player_id, ch):
         '''
         Called when client requests his brick to move.
