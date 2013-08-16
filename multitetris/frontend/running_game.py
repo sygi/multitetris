@@ -21,8 +21,13 @@ def draw_game(display):
     Game screen
     """
     # TODO
+    lineColor = pygame.Color(100, 100, 100)
     blockpixsize = consts['block_element_size']
-    
+    def draw_the_table():
+	for k in range(0, 600, 60):
+	    pygame.draw.line(windowSurface, (100, 100, 101), ( consts['window_width']-consts['tab_width'], k ), (consts['window_width'], k ))
+        pygame.draw.line(windowSurface, (100, 100, 101), ( consts['window_width']-consts['tab_width'], 0 ), (consts['window_width']-consts['tab_width'], consts['window_height'] ))
+
     def draw_the_blocks():
         def blockPos_to_pixPos(BPX, BPY):
             # Blocks should be displayed in a grid in "virtual window" placed somewhere in game window, currently starting from (10,200)
