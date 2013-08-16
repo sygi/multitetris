@@ -14,13 +14,11 @@ class Board(object):
 		self.__brick_arr = [[None]*__height for _ in xrange(__width)]
 	
 	
-	def is_brick_at_pos(self, x, y):
+	def brick_at_pos(self, x, y):
 		"""
-		Returns True if there is a block at (x, y);
+		Returns the block at position [x, y] or None if the position is empty
 		"""
-		x %= __width
-		y %= __height
-		return __brick_arr[x][y] is None
+		return __brick_arr[x % __width][y % __height]
 	
 	
 	def broaden(self, new_width):
