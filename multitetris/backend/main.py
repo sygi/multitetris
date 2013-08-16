@@ -2,6 +2,8 @@ import threading
 import socket
 import json
 import time
+import os
+import signal
 
 TICK_TIMEOUT = 0.1
 
@@ -10,6 +12,7 @@ global_new_state_condition = threading.Condition()
 
 
 def main(game):
+    signal.signal(signal.SIGINT, lambda *args: os._exit(1))
     sock = socket.socket()
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(('localhost', 9999))
