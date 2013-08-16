@@ -32,19 +32,11 @@ class Board(object):
 		__width = new_width
 	
 	
-	def get_width(self):
+	def get_size(self)
 		"""
-		Returns width.
+		Gets board's size as [w, h]
 		"""
-		return __width
-	
-	
-	def get_height(self):
-		"""
-		Return height.
-		"""
-		return ___height
-	
+		return [__width, __height]
 	
 	def get_state(self):
 		"""
