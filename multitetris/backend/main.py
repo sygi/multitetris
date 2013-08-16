@@ -28,14 +28,17 @@ def client_writer(game, addr, sock):
         time.sleep(WRITE_TIMEOUT)
 
 def client_reader(game, addr, sock):
+    with global_lock:
+        game.player_connected(addr)
     while True:
         move = sock.recv(1)
         with global_lock:
-            game.write_move(move)
+            game.move(move)
 
 def ticker(game):
     while True:
-        game.tick()
+        with global_lock:
+            game.tick()
         time.sleep(TICK_TIMEOUT)
 
 if __name__ == '__main__':

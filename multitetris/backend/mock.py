@@ -4,16 +4,19 @@ class Game(object):
     def __init__(self):
         pass
 
-    def get_state(self, addr):
+    def player_connected(self, ident):
+        print 'PLAYER CONNECTED', ident
+
+    def get_state(self, ident):
         return {
-            'clientId': addr,
+            'clientId': ident,
             'msg': 'dupa',
             'bricks': [
-                {"pos": [10, 20], "clientId": addr}
+                {"pos": [10, 20], "clientId": ident}
             ]
         }
 
-    def write_move(self, ch):
+    def move(self, ch):
         print 'MOVE %r' % ch
 
     def tick(self):
