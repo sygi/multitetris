@@ -1,4 +1,4 @@
-from .state import Brick
+from .brick import Brick
 
 import random
 
