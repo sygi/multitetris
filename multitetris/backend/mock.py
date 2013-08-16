@@ -23,17 +23,29 @@ class Game(object):
             player_id = ('localhost', 12)
         return [FakeBrick()]
     
+    def get_board_size(self):
+		'''
+		Returns board size
+		'''
+		return 80, 25
+    
     def get_points(self):
         '''
-        Returns list of players' points
+        Returns dict of players' id and points
         '''
-        print 'POINTS GOT'
+        return {'127.0.0.1': 300, 'localhost':150}
     
     def start(self):
         '''
         Called when game starts, before any ticks.
         '''
         print 'START'
+    
+    def get_player_position(player_id):
+		'''
+		Returns player position
+		'''
+		return 15
     
     def move(self, player_id, ch):
         '''
