@@ -3,12 +3,56 @@ from pygame.locals import *  # constants
 from common import *
 
 ########################
+# Menu screen
+########################
+
+def draw_menu():
+	pass
+
+########################
+# Game screen
+########################
+
+def draw_game():
+	pass
+
+########################
+# About screen
+########################
+
+def draw_about():
+	pass
+
+########################
+# Loading screen
+########################
+
+def draw_loading():
+	pass
+
+########################
+# Join screen
+########################
+
+def draw_join():
+	pass
+
+########################
+# Main draw funtion
+########################
+
+def draw():
+	pass
+
+########################
 # PyGame init
 ########################
+blockpixsize = consts['block_element_size']
+
 pygame.init()
 fps_clock = pygame.time.Clock()  # FPS limiter
 
-display = pygame.display.set_mode((consts['window_width'], consts['window_height']))
+display = pygame.display.set_mode((consts['window_width'], consts['window_height']), DOUBLEBUF)
 pygame.display.set_caption("Multitetris")
 
 fontObj = pygame.font.Font('freesansbold.ttf', 30)
