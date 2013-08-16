@@ -3,10 +3,10 @@ import socket
 import json
 import time
 
-WRITE_TIMEOUT = 0.1
 TICK_TIMEOUT = 0.1
 
 global_lock = threading.Lock()
+global_new_state_condition = threading.Condition()
 
 def main(game):
     sock = socket.socket()
@@ -26,7 +26,8 @@ def client_writer(game, addr, sock):
             state = make_state(board=game.get_board(),
                                addr=addr)
         sock.sendall(json.dumps(state) + '\n')
-        time.sleep(WRITE_TIMEOUT)
+        with global_new_state_condition:
+            global_new_state_condition.wait()
 
 def make_state(board, addr):
     return {
@@ -50,6 +51,8 @@ def ticker(game):
     while True:
         with global_lock:
             game.tick()
+        with global_new_state_condition:
+            global_new_state_condition.notify_all()
         time.sleep(TICK_TIMEOUT)
 
 if __name__ == '__main__':

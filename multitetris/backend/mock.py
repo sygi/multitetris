@@ -9,7 +9,7 @@ class Game(object):
         Called when player connects.
         - player_id - opaque value
         '''
-        print 'PLAYER CONNECTED', ident
+        print 'PLAYER CONNECTED', player_id
 
     def get_board(self):
         '''
