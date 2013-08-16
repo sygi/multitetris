@@ -15,9 +15,9 @@ class Game(object):
         - player_id - opaque value
         """
         self.player_colors[player_id] = (
-            random.randrange(256),
-            random.randrange(256),
-            random.randrange(256))
+            random.randrange(100, 256),
+            random.randrange(100, 256),
+            random.randrange(100, 256))
 
     def get_board(self):
         '''
