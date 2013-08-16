@@ -63,7 +63,7 @@ class Brick(object):
         for iy in range(4):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
-                    ls.append(Box(self.pos_x + ix, self.pos_y - 3 + iy, self.color))
+                    ls.append(((self.pos_x + ix, self.pos_y - 3 + iy), self.color))
         return ls
 
     
@@ -95,9 +95,10 @@ class Brick(object):
                     return True
 """
 
+
 class Box(object):
     """
-    Represents one box in board
+    Deprecated - we're going to use tuples: (pos, color) instead
     """
     def __init__(self, x, y, color):
         self.x = x
@@ -106,4 +107,6 @@ class Box(object):
 
     def __str__(self):
     	return "(%d, %d, color)" % (self.x, self.y)
+
+
     	
