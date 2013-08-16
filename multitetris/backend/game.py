@@ -84,3 +84,8 @@ class Game(object):
             brick.pos_y -= 1
             if brick.pos_y <= 0:
                 del self.bricks[player_id]
+                self._freeze_brick(brick)
+
+    def _freeze_brick(self, brick):
+        for pos in brick.to_box_list():
+            self.board[pos] = brick.color

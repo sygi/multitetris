@@ -63,10 +63,9 @@ class Brick(object):
         for iy in range(4):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
-                    ls.append(Box(self.pos_x + ix, self.pos_y + 3 - iy, self.color))
+                    ls.append((self.pos_x + ix, self.pos_y + 3 - iy))
         return ls
 
-    
     # we're looking for collisions with board other than with
     # the brick former self
     def is_collision_with_board(old_box_list):
@@ -76,7 +75,7 @@ class Brick(object):
                 if new_box_list[i].x == old_box.x and new_box_list[i].y == old_box.y:
                     del new_box_list[i]
         for box in new_box_list:
-            if self.board.is_box_at(box.x,box.y):				
+            if self.board.is_box_at(box.x,box.y):
                 return True
 
                 """
@@ -86,7 +85,7 @@ class Brick(object):
                 return True
 
         return False
-                
+
     def is_collision_with_brick(brick):
         enemy_boxes = brick.to_box_list()
         for my_box in self.to_box_list():
@@ -106,4 +105,3 @@ class Box(object):
 
     def __str__(self):
     	return "(%d, %d, color)" % (self.x, self.y)
-    	
