@@ -1,6 +1,12 @@
+from .board import Board
+
 class Game(object):
     def __init__(self):
-        pass
+        Board board();
+
+    board
+    players = {}
+    next_player_id = 1
 
     def player_connected(self, player_id):
         """
