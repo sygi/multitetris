@@ -3,7 +3,7 @@ class Game(object):
         pass
 
     def add_player(self, player_id):
-		'''
+        '''
         Called when player connects.
         - player_id - opaque value
         '''
@@ -17,15 +17,15 @@ class Game(object):
         - player_id - opaque value passed by move/player_connected
         '''
         class FakeBrick:
-            pos = [10, 10]
-            player_id = ('localhost', 12)
+            pos = (10, 10)
+            color = (15, 124, 67)
         return [FakeBrick()]
     
     def get_board_size(self):
-		'''
-		Returns board size
-		'''
-		return 80, 25
+        '''
+        Returns board size
+        '''
+        return 80, 25
     
     def get_points(self):
         '''
@@ -40,10 +40,10 @@ class Game(object):
         print 'START'
     
     def get_player_position(player_id):
-		'''
-		Returns player position
-		'''
-		return 15
+        '''
+        Returns player position
+        '''
+        return 15
     
     def move(self, player_id, ch):
         """

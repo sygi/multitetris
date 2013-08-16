@@ -35,9 +35,11 @@ def client_writer(game, addr, sock):
 def make_state(board, addr):
     return {
         'client_id': addr,
+        'board_size': game.get_board_size(),
         'bricks': [ {'pos': item.pos,
                      'player_id': item.player_id}
-                    for item in board ]
+                    for item in board ],
+        'points': game.get_points(),
     }
 
 
