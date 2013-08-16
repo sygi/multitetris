@@ -8,6 +8,7 @@ TICK_TIMEOUT = 0.1
 global_lock = threading.Lock()
 global_new_state_condition = threading.Condition()
 
+
 def main(game):
     sock = socket.socket()
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -20,6 +21,7 @@ def main(game):
         threading.Thread(target=client_reader, args=[game, addr, client_sock]).start()
         threading.Thread(target=client_writer, args=[game, addr, client_sock]).start()
 
+
 def client_writer(game, addr, sock):
     while True:
         with global_lock:
@@ -29,6 +31,7 @@ def client_writer(game, addr, sock):
         with global_new_state_condition:
             global_new_state_condition.wait()
 
+
 def make_state(board, addr):
     return {
         'client_id': addr,
@@ -36,6 +39,7 @@ def make_state(board, addr):
                      'player_id': item.player_id}
                     for item in board ]
     }
+
 
 def client_reader(game, addr, sock):
     with global_lock:
@@ -46,6 +50,7 @@ def client_reader(game, addr, sock):
             break
         with global_lock:
             game.move(move)
+
 
 def ticker(game):
     while True:
