@@ -7,42 +7,42 @@ from common import consts, config
 ########################
 
 def draw_menu():
-	pass
+    pass
 
 ########################
 # Game screen
 ########################
 
 def draw_game():
-	pass
+    pass
 
 ########################
 # About screen
 ########################
 
 def draw_about():
-	pass
+    pass
 
 ########################
 # Loading screen
 ########################
 
 def draw_loading():
-	pass
+    pass
 
 ########################
 # Join screen
 ########################
 
 def draw_join():
-	pass
+    pass
 
 ########################
 # Main draw funtion
 ########################
 
 def draw():
-	pass
+    pass
 
 ########################
 # PyGame init
@@ -69,13 +69,13 @@ while not quit_request:
     display.fill(pygame.Color(0, 0, 0))
 
     for event in pygame.event.get():
-    	if   event.type == QUIT:
-    		quit_request = True
-    	elif event.type == MOUSEMOTION:
-    		mousex, mousey = event.pos
-    	elif event.type == KEYDOWN:
-    		if event.key == K_ESCAPE:
-    			quit_request = True
+        if   event.type == QUIT:
+            quit_request = True
+        elif event.type == MOUSEMOTION:
+            mousex, mousey = event.pos
+        elif event.type == KEYDOWN:
+            if event.key == K_ESCAPE:
+                quit_request = True
     pygame.display.update()
     fps_clock.tick(config['max_fps'])
 
