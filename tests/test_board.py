@@ -10,14 +10,23 @@ class TestBoard(unittest.TestCase):
 		from multitetris.backend.game import Game
 		board = Game().get_board()
 
-from multitetris.backend.brick import Brick, Type
+from multitetris.backend.brick import Brick, Type, Box
 class TestBrick(unittest.TestCase):
 	def test_create_brick(self):
-		brick = Brick(Type.LONG, (1,1), 2, (1,2,3))
+		brick = Brick(Type.STAIR, (1,1), 2, (1,2,3))
 
-	def test_create_brick(self):
-		brick = Brick(Type.STAIR, (2,2), 3, (3,2,1))
-		self.assertTrue(len(brick.to_box_list()) == 4)
+	def test_box_list(self):
+		color = (3,2,1)
+		pos = (2,2)
+		brick = Brick(Type.LONG, pos, 3, color)
+		box_list = brick.to_box_list()
+		print Box(pos[0], pos[1] +2, color)
+		for box in box_list:
+			print box
+			if box == Box(pos[0], pos[1]+2, color):
+				print "OK"
+
+		self.assertTrue(Box(pos[0], pos[1]+2, color) in box_list)
 
 unittest.main()
 

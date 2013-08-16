@@ -23,8 +23,8 @@ class Brick(object):
                 ["0000","0000","0000","1111"],
                 ["0100","0100","0100","0100"],
                 ["0000","0000","0000","1111"]]
-            self.pos_x = pos_x+3
-            self.pos_y = pos_y-1
+            self.pos_y = pos_y+3
+            self.pos_x = pos_x-1
         elif enum == Type.DUCK_L:
             self.state_table = [
                 ["0000","0000","0110","1100"],
@@ -63,7 +63,7 @@ class Brick(object):
         for iy in range(4):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
-                    ls.append(Box(self.pos_x + ix, self.pos_y + 3 - iy, self.color))
+                    ls.append(Box(self.pos_x + ix, self.pos_y - 3 + iy, self.color))
         return ls
 
     
