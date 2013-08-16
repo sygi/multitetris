@@ -49,7 +49,7 @@ def make_state(board, addr, game):
         'client_id': addr,
         'board_size': game.get_board_size(),
         'bricks': [ {'pos': item.pos,
-                     'player_id': item.player_id}
+                     'color': item.color}
                     for item in board ],
         'points': game.get_points(),
     }
@@ -66,7 +66,7 @@ def client_reader(game, addr, sock):
         if not move:
             break
         with global_lock:
-            game.move(move)
+            game.move(addr, move)
 
 
 def ticker(game):
@@ -82,6 +82,6 @@ def ticker(game):
         time.sleep(TICK_TIMEOUT)
 
 def run(bindto=('localhost', 9999)):
-    from .mock import Game
+    from .game import Game
     g = Game()
     main(g, bindto)
