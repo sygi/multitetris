@@ -8,6 +8,7 @@ TICK_TIMEOUT = 0.1
 
 global_lock = threading.Lock()
 
+
 def main(game):
     sock = socket.socket()
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -20,12 +21,14 @@ def main(game):
         threading.Thread(target=client_reader, args=[game, addr, client_sock]).start()
         threading.Thread(target=client_writer, args=[game, addr, client_sock]).start()
 
+
 def client_writer(game, addr, sock):
     while True:
         with global_lock:
             state = game.get_state(addr)
         sock.sendall(json.dumps(state) + '\n')
         time.sleep(WRITE_TIMEOUT)
+
 
 def client_reader(game, addr, sock):
     with global_lock:
@@ -34,6 +37,7 @@ def client_reader(game, addr, sock):
         move = sock.recv(1)
         with global_lock:
             game.move(move)
+
 
 def ticker(game):
     while True:
