@@ -1,4 +1,3 @@
-
 class Type(object):
     LONG, DUCK_L, DUCK_R, SQR, STAIR = range(5)
 
@@ -67,13 +66,44 @@ class Brick(object):
                     ls.append(Box(self.pos_x + ix, self.pos_y + 3 - iy, self.color))
         return ls
 
+    
+    # we're looking for collisions with board other than with
+    # the brick former self
+    def is_collision_with_board(old_box_list):
+        new_box_list = self.to_box_list()
+        for i in len(new_box_list):
+            for old_box in old_box_list:
+                if new_box_list[i].x == old_box.x and new_box_list[i].y == old_box.y:
+                    del new_box_list[i]
+        for box in new_box_list:
+            if self.board.is_box_at(box.x,box.y):				
+                return True
+
+                """
     def collides_with_board(self, board):
         for box in self.to_box_list():
             if (box.x, box.y) in board:
                 return True
 
         return False
+                
+    def is_collision_with_brick(brick):
+        enemy_boxes = brick.to_box_list()
+        for my_box in self.to_box_list():
+            for enemy_box in enemy_boxes:
+                if enemy_box.x == my_box.x and enemy_box.y == my_box.y:
+                    return True
+"""
 
-    def collides_with_brick(self, brick):
-        # TODO
-        return False
+class Box(object):
+    """
+    Represents one box in board
+    """
+    def __init__(self, x, y, color):
+        self.x = x
+        self.y = y
+        self.color = color
+
+    def __str__(self):
+    	return "(%d, %d, color)" % (self.x, self.y)
+    	

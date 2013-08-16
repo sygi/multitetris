@@ -1,9 +1,12 @@
-from .state import Brick
+from .brick import Brick
 
 import random
 
 class Game(object):
     def __init__(self):
+        """
+        what is board? And what is bricks?
+        """
         self.board = {}
         self.bricks = {}
         self.player_colors = {}
