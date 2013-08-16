@@ -32,6 +32,8 @@ def client_reader(game, addr, sock):
         game.player_connected(addr)
     while True:
         move = sock.recv(1)
+        if not move:
+            break
         with global_lock:
             game.move(move)
 
