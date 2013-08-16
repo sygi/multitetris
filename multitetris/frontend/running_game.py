@@ -1,64 +1,115 @@
 import pygame
 from pygame.locals import *  # constants
-from common import consts, config
+from common import *
 
-blockpixsize = consts['block_element_size']
+########################
+# Globals
+########################
+
+mousex,mousey = 0,0
+cur_screen = 'MENU'
+
+def draw_menu():
+    """
+    Menu screen
+    """
+    pass
+
+
+def draw_game(display):
+    """
+    Game screen
+    """
+    # TODO
+    blockpixsize = consts['block_element_size']
+    
+    def draw_the_blocks():
+        def blockPos_to_pixPos(BPX, BPY):
+            # Blocks should be displayed in a grid in "virtual window" placed somewhere in game window, currently starting from (10,200)
+            return (10 + BPX * blockpixsize, 200 + BPY * blockpixsize)
+        def draw_block_element(BlockPosX, BlockPosY):
+            # Draw a block element in a block's array
+            X, Y = blockPos_to_pixPos(BlockPosX, BlockPosY)
+            pygame.draw.rect(display, colors['block_border'], (X, Y, blockpixsize, blockpixsize), 1)
+            pygame.draw.rect(display, colors['block_inner'], (1+X, 1+Y, blockpixsize-2, blockpixsize-2), 0)
+        def draw_the_grid():
+            for i in range(consts['number_of_rows']*blockpixsize):
+                for j in range(consts['columns_per_player']*blockpixsize):
+                    X, Y = blockPos_to_pixPos(i, j)
+                    pygame.draw.rect(display, colors['block_border'], (X, Y, blockpixsize, blockpixsize), 1)
+        # finally, do sth
+        for i in range(10):
+            for j in range(10):
+                draw_block_element(i, j)
+        
+        draw_the_grid()
+        # end of draw_the_blocks()
+    
+    display.fill(colors['semirandom'])
+    draw_the_blocks()
+
+
+def draw_about():
+    """
+    About screen
+    """
+    pass
+
+
+def draw_loading():
+    """
+    Loading screen
+    """
+    pass
+
+
+def draw_join():
+    """
+    Join screen
+    """
+    pass
+
+def draw():
+    """
+    Main draw function
+    """
+    if cur_screen == 'MENU': draw_menu()
+    if cur_screen == 'GAME': draw_game()
+    if cur_screen == 'ABOUT': draw_about()
+    if cur_screen == 'LOADING': draw_loading()
+    if cur_screen == 'JOIN': draw_join()
+
+########################
+# PyGame init
+########################
 dmsg = '' # debug msg
 
 pygame.init()
-fpsClock = pygame.time.Clock()  # FPS
+fps_clock = pygame.time.Clock()  # FPS limiter
 
-windowSurface = pygame.display.set_mode((consts['window_width'], consts['window_height']), DOUBLEBUF)
-pygame.display.set_caption("The game of Multitetris is running.")  # window title
+display = pygame.display.set_mode((consts['window_width'], consts['window_height']), DOUBLEBUF)
+pygame.display.set_caption("Multitetris")
 
-fontObj = pygame.font.Font('freesansbold.ttf', 15)
+quit_request = False
 
-semirandomColor = pygame.Color(123, 230, 58)
-blockInnerColor = pygame.Color(192, 73, 239)
-blockBorderColor = pygame.Color(23, 45, 32)
-debugFontColor = pygame.Color(250, 250, 250)
-
-def blockPos_to_pixPos(BPX, BPY):
-    # Blocks should be displayed in a grid in "virtual window" placed somewhere in game window, currently starting from (10,200)
-    return (10 + BPX * blockpixsize, 200 + BPY * blockpixsize)
-
-def draw_block_element(BlockPosX, BlockPosY):
-    # Draw a block element in a block's array
-    X, Y = blockPos_to_pixPos(BlockPosX, BlockPosY)
-    pygame.draw.rect(windowSurface, blockBorderColor, (X, Y, blockpixsize, blockpixsize), )
-    pygame.draw.rect(windowSurface, blockInnerColor, (1+X, 1+Y, blockpixsize-2, blockpixsize-2))
-
-def on_quit_request():
-    # If a player signals his will to quit
-    # shall we return to the menu, or quit immediately?
-    pygame.quit()
-    sys.exit()
+########################
+# Main loop
+########################
+while not quit_request:
+    display.fill(pygame.Color(0, 0, 0))
     
-
-while True:
-    windowSurface.fill(semirandomColor)
-    
-    # draw an array of blocks, 10x10
-    for i in range(10):
-        for j in range(10):
-            draw_block_element(i, j)
-    
-    # Events!
     for event in pygame.event.get():
         if event.type == QUIT:
-            on_quit_request()
+            quit_request = True
+        elif event.type == MOUSEMOTION:
+            mousex, mousey = event.pos
         elif event.type == KEYDOWN:
-            if event.key in (K_LEFT, K_RIGHT, K_UP, K_DOWN):
-                dmsg = 'key down!'
             if event.key == K_ESCAPE:
-                dmsg = 'they try to escape!'
-                pygame.event.post(pygame.event.Event(QUIT))
+                quit_request = True
     
-    # Debug!
-    dmsgSurface = fontObj.render(dmsg, False, debugFontColor)
-    dmsgRect = dmsgSurface.get_rect()
-    dmsgRect.topleft = (10, consts['window_height'] - 25)
-    windowSurface.blit(dmsgSurface, dmsgRect)
+    draw_game(display)
     
-    pygame.display.update()  # speak your mind!
-    fpsClock.tick(config['max_fps'])
+    pygame.display.update()
+    fps_clock.tick(config['max_fps'])
+
+pygame.quit()
