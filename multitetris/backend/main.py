@@ -9,10 +9,15 @@ global_lock = threading.Lock()
 global_new_state_condition = threading.Condition()
 
 
-def main(game):
+def main(game, bindto):
+    """
+    Main server function
+    game - game object instance
+    bindto - (host, port) tuple
+    """
     sock = socket.socket()
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    sock.bind(('localhost', 9999))
+    sock.bind(bindto)
     sock.listen(3)
     threading.Thread(target=ticker, args=[game]).start()
     while True:
@@ -23,6 +28,9 @@ def main(game):
 
 
 def client_writer(game, addr, sock):
+    """
+    Client output writer thread
+    """
     while True:
         with global_lock:
             state = make_state(board=game.get_board(),
@@ -42,6 +50,9 @@ def make_state(board, addr):
 
 
 def client_reader(game, addr, sock):
+    """
+    Client input reader thread
+    """
     with global_lock:
         game.add_player(addr)
     while True:
@@ -53,6 +64,10 @@ def client_reader(game, addr, sock):
 
 
 def ticker(game):
+    """
+    Calls game.tick() periodically and notifies
+    all clients about new data
+    """
     while True:
         with global_lock:
             game.tick()
@@ -60,6 +75,7 @@ def ticker(game):
             global_new_state_condition.notify_all()
         time.sleep(TICK_TIMEOUT)
 
-if __name__ == '__main__':
+def run(bindto=('localhost', 9999)):
     from .mock import Game
-    main(Game())
+    g = Game()
+    main(g, bindto)
