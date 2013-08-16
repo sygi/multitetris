@@ -1,3 +1,5 @@
+from pygame import Color
+
 """
 Usage:
 
@@ -18,4 +20,10 @@ consts = {
 
 config = {
     'max_fps': 60,
+}
+
+colors = {
+    'semirandom': Color(123, 230, 58),
+    'block_inner': Color(192, 73, 239),
+    'block_border': Color(23, 45, 32),
 }
