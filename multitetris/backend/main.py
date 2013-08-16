@@ -37,13 +37,14 @@ def client_writer(game, addr, sock):
     while True:
         with global_lock:
             state = make_state(board=game.get_board(),
-                               addr=addr)
+                               addr=addr,
+                               game=game)
         sock.sendall(json.dumps(state) + '\n')
         with global_new_state_condition:
             global_new_state_condition.wait()
 
 
-def make_state(board, addr):
+def make_state(board, addr, game):
     return {
         'client_id': addr,
         'board_size': game.get_board_size(),
@@ -61,7 +62,7 @@ def client_reader(game, addr, sock):
     with global_lock:
         game.add_player(addr)
     while True:
-        move = sock.recv(1)
+        move = sock.recv(1) # TODO: json convertion
         if not move:
             break
         with global_lock:
