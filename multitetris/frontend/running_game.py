@@ -1,6 +1,6 @@
 import pygame
 from pygame.locals import *  # constants
-from common import *
+from common import consts, config
 
 ########################
 # Menu screen
@@ -48,6 +48,7 @@ def draw():
 # PyGame init
 ########################
 blockpixsize = consts['block_element_size']
+dmsg = '' # debug msg
 
 pygame.init()
 fps_clock = pygame.time.Clock()  # FPS limiter
@@ -76,6 +77,6 @@ while not quit_request:
     		if event.key == K_ESCAPE:
     			quit_request = True
     pygame.display.update()
-    fps_clock.tick(60)
+    fps_clock.tick(config['max_fps'])
 
 pygame.quit()
