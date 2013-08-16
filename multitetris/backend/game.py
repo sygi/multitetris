@@ -1,8 +1,7 @@
-from .board import Board
+from .state import Brick
 
 class Game(object):
     def __init__(self):
-        Board board();
         self.board = Board()
         self.players = []
         self.next_player_id = 1
@@ -22,33 +21,33 @@ class Game(object):
         - pos - tuple of ints
         - player_id - opaque value passed by move/player_connected
         '''
-        
+
         return [FakeBrick()]
-    
+
     def get_board_size(self):
         '''
         Returns board size
         '''
         return 80, 25
-    
+
     def get_points(self):
         '''
         Returns dict of players' id and points
         '''
         return {'127.0.0.1': 300, 'localhost':150}
-    
+
     def start(self):
         '''
         Called when game starts, before any ticks.
         '''
         print 'START'
-    
+
     def get_player_position(player_id):
         '''
         Returns player position
         '''
         return 15
-    
+
     def move(self, player_id, ch):
         """
         Called when client requests his brick to move.
