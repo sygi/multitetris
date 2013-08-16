@@ -15,22 +15,22 @@ def draw_game(display):
 
     display.fill((123, 230, 58))
 
-SCALE = 30
-SIZE = (SCALE, SCALE)
+SIZE = (15, 15)
 
 def screen_pos(pos):
-    return (pos[0] * SCALE,
-            consts.window_height - pos[1] * SCALE)
+    return (pos[0] * SIZE[0],
+            consts.window_height - pos[1] * SIZE[1])
 
 def read_state():
     return json.loads(sockf.readline())
 
 def draw_game(display):
     state = read_state()
+    print state
 
     for brick in state['bricks']:
         pos = screen_pos(brick['pos'])
-        print pos, brick['color']
+        print pos + SIZE, brick['color']
         pygame.draw.rect(display, brick['color'],
                          pos + SIZE, 0)
 

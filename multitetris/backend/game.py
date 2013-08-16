@@ -7,7 +7,9 @@ class Game(object):
         self.board = {}
         self.bricks = {}
         self.player_colors = {}
-        self.next_player_id = 1
+        self.player_pos = {}
+
+        self.next_player_pos = 1
 
     def add_player(self, player_id):
         """
@@ -18,6 +20,10 @@ class Game(object):
             random.randrange(100, 256),
             random.randrange(100, 256),
             random.randrange(100, 256))
+
+        self.player_pos[player_id] = self.next_player_pos
+        self.next_player_pos += 5
+        self.next_player_pos %= self.get_board_size()[0]
 
     def get_board(self):
         '''
@@ -51,7 +57,7 @@ class Game(object):
         '''
         Returns player position
         '''
-        return 15
+        return self.player_pos[player_id]
 
     def move(self, player_id, ch):
         """
@@ -66,8 +72,8 @@ class Game(object):
         for player_id, color in self.player_colors.items():
             if player_id not in self.bricks:
                 brick = Brick(0,
-                              (self.get_board_size()[0],
-                               self.get_player_position(player_id)),
+                              (self.get_player_position(player_id),
+                               self.get_board_size()[0],),
                               player_id, color)
                 self.bricks[player_id] = brick
 
