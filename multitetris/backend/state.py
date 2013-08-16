@@ -78,6 +78,7 @@ class Brick(object):
         for box in new_box_list:
             if self.board.is_box_at(box.x,box.y):				
                 return True
+
                 """
     def collides_with_board(self, board):
         for box in self.to_box_list():
@@ -102,3 +103,7 @@ class Box(object):
         self.x = x
         self.y = y
         self.color = color
+
+    def __str__(self):
+    	return "(%d, %d, color)" % (self.x, self.y)
+    	
