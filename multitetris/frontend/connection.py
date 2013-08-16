@@ -2,15 +2,16 @@ import threading
 import socket
 import json
 
+
 class Connection(object):
     def __init__(self, ip_address, on_update):
         self.ip_address = ip_address
         self.on_update = on_update
-        # TODO: connection
+        # connection
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((ip_address, 9999))
-        # TODO: thread
-        
+        # thread
+        threading.Thread(target = self._run, args=[])
     
     def _run(self):
         pass

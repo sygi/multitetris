@@ -37,18 +37,19 @@ def client_writer(game, addr, sock):
     while True:
         with global_lock:
             state = make_state(board=game.get_board(),
-                               addr=addr)
+                               addr=addr,
+                               game=game)
         sock.sendall(json.dumps(state) + '\n')
         with global_new_state_condition:
             global_new_state_condition.wait()
 
 
-def make_state(board, addr):
+def make_state(board, addr, game):
     return {
         'client_id': addr,
         'board_size': game.get_board_size(),
         'bricks': [ {'pos': item.pos,
-                     'player_id': item.player_id}
+                     'color': item.color}
                     for item in board ],
         'points': game.get_points(),
     }
@@ -61,11 +62,11 @@ def client_reader(game, addr, sock):
     with global_lock:
         game.add_player(addr)
     while True:
-        move = sock.recv(1)
+        move = sock.recv(1) # TODO: json convertion
         if not move:
             break
         with global_lock:
-            game.move(move)
+            game.move(addr, move)
 
 
 def ticker(game):
@@ -81,6 +82,6 @@ def ticker(game):
         time.sleep(TICK_TIMEOUT)
 
 def run(bindto=('localhost', 9999)):
-    from .mock import Game
+    from .game import Game
     g = Game()
     main(g, bindto)
