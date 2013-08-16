@@ -2,6 +2,12 @@ import pygame
 from pygame.locals import *  # constants
 from common import *
 
+########################
+# Globals
+########################
+
+mousex,mousey = 0,0
+cur_screen = 'MENU'
 
 def draw_menu():
     """
@@ -41,7 +47,11 @@ def draw():
     """
     Main draw function
     """
-    pass
+    if cur_screen == 'MENU': draw_menu()
+    if cur_screen == 'GAME': draw_game()
+    if cur_screen == 'ABOUT': draw_about()
+    if cur_screen == 'LOADING': draw_loading()
+    if cur_screen == 'JOIN': draw_join()
 
 ########################
 # PyGame init
@@ -58,9 +68,6 @@ pygame.display.set_caption("Multitetris")
 fontObj = pygame.font.Font('freesansbold.ttf', 30)
 quit_request = False
 
-# Controls
-mousex,mousey = 0,0
-
 ########################
 # Main loop
 ########################
@@ -75,6 +82,7 @@ while not quit_request:
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 quit_request = True
+
     pygame.display.update()
     fps_clock.tick(config['max_fps'])
 
@@ -87,11 +95,5 @@ def draw_block_element(x, y):
     x, y = block_pos_to_pix_pos(x, y)
     pygame.draw.rect(window, colors['block-border'], (x, y, blockpixsize, blockpixsize))
     pygame.draw.rect(window, colors['block-inner'], (x+1, y+1, blockpixsize-2, blockpixsize-2))
-
-while True:
-    window.fill(colors['semirandom'])
-    for i in range(10):
-        for j in range(10):
-            draw_block_element(i, j)
 
 pygame.quit()
