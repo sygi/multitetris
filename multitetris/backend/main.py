@@ -23,9 +23,18 @@ def main(game):
 def client_writer(game, addr, sock):
     while True:
         with global_lock:
-            state = game.get_state(addr)
+            state = make_state(board=game.get_board(),
+                               addr=addr)
         sock.sendall(json.dumps(state) + '\n')
         time.sleep(WRITE_TIMEOUT)
+
+def make_state(board, addr):
+    return {
+        'client_id': addr,
+        'bricks': [ {'pos': item.pos,
+                     'player_id': item.player_id}
+                    for item in board ]
+    }
 
 def client_reader(game, addr, sock):
     with global_lock:

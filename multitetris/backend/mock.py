@@ -4,20 +4,35 @@ class Game(object):
     def __init__(self):
         pass
 
-    def player_connected(self, ident):
+    def player_connected(self, player_id):
+        '''
+        Called when player connects.
+        - player_id - opaque value
+        '''
         print 'PLAYER CONNECTED', ident
 
-    def get_state(self, ident):
-        return {
-            'clientId': ident,
-            'msg': 'dupa',
-            'bricks': [
-                {"pos": [10, 20], "clientId": ident}
-            ]
-        }
+    def get_board(self):
+        '''
+        Returns list of bricks.
+        duck Brick:
+        - pos - tuple of ints
+        - player_id - opaque value passed by move/player_connected
+        '''
+        class FakeBrick:
+            pos = [10, 10]
+            player_id = ('localhost', 12)
+        return [FakeBrick()]
 
-    def move(self, ch):
+    def move(self, player_id, ch):
+        '''
+        Called when client requests his brick to move.
+        ch - passed from frontent
+        player_id - opaque value to be stored in brick
+        '''
         print 'MOVE %r' % ch
 
     def tick(self):
+        '''
+        Called each TICK_TIMEOUT.
+        '''
         print 'TICK!'
