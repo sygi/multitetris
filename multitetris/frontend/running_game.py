@@ -69,7 +69,11 @@ while not quit_request:
     display.fill(pygame.Color(0, 0, 0))
 
     for event in pygame.event.get():
+<<<<<<< HEAD
         if event.type == QUIT:
+=======
+        if   event.type == QUIT:
+>>>>>>> e842a9d13875580565c66faf167d260a8f9bb61a
             quit_request = True
         elif event.type == MOUSEMOTION:
             mousex, mousey = event.pos
