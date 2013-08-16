@@ -1,15 +1,13 @@
-
-
 class Game(object):
     def __init__(self):
         pass
 
     def add_player(self, player_id):
-        '''
+		'''
         Called when player connects.
         - player_id - opaque value
         '''
-        print 'PLAYER CONNECTED', player_id
+        print('PLAYER CONNECTED', player_id)
 
     def get_board(self):
         '''
@@ -48,15 +46,15 @@ class Game(object):
 		return 15
     
     def move(self, player_id, ch):
-        '''
+        """
         Called when client requests his brick to move.
         ch - passed from frontent
         player_id - opaque value to be stored in brick
-        '''
-        print 'MOVE %r' % ch
+        """
+        print('MOVE %r' % ch)
 
     def tick(self):
-        '''
+        """
         Called each TICK_TIMEOUT.
-        '''
-        print 'TICK!'
+        """
+        print('TICK!')
