@@ -1,4 +1,4 @@
-from .brick import Brick
+from .brick import Brick, BoardBrick
 
 import random
 import collections
@@ -36,13 +36,11 @@ class Game(object):
         - pos - tuple of ints
         - color
         '''
-        BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
         board = [
             BoardBrick(pos, color)
             for pos, color in self.board.items() ]
         for brick in self.bricks.values():
-            for pos in brick.to_box_list():
-                board.append(BoardBrick(pos, brick.color))
+            board += brick.to_box_list()
         return board
 
     def get_board_size(self):
@@ -88,5 +86,5 @@ class Game(object):
                 self._freeze_brick(brick)
 
     def _freeze_brick(self, brick):
-        for pos in brick.to_box_list():
+        for pos, color in brick.to_box_list():
             self.board[pos] = brick.color
