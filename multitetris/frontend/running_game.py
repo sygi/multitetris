@@ -2,46 +2,45 @@ import pygame
 from pygame.locals import *  # constants
 from common import *
 
-########################
-# Menu screen
-########################
 
 def draw_menu():
+    """
+    Menu screen
+    """
     pass
 
-########################
-# Game screen
-########################
 
 def draw_game():
+    """
+    Game screen
+    """
     pass
 
-########################
-# About screen
-########################
 
 def draw_about():
+    """
+    About screen
+    """
     pass
 
-########################
-# Loading screen
-########################
 
 def draw_loading():
+    """
+    Loading screen
+    """
     pass
 
-########################
-# Join screen
-########################
 
 def draw_join():
+    """
+    Join screen
+    """
     pass
 
-########################
-# Main draw funtion
-########################
-
 def draw():
+    """
+    Main draw function
+    """
     pass
 
 ########################
@@ -69,11 +68,7 @@ while not quit_request:
     display.fill(pygame.Color(0, 0, 0))
 
     for event in pygame.event.get():
-<<<<<<< HEAD
         if event.type == QUIT:
-=======
-        if   event.type == QUIT:
->>>>>>> e842a9d13875580565c66faf167d260a8f9bb61a
             quit_request = True
         elif event.type == MOUSEMOTION:
             mousex, mousey = event.pos

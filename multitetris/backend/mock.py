@@ -3,11 +3,7 @@ class Game(object):
         pass
 
     def add_player(self, player_id):
-<<<<<<< HEAD
         """
-=======
-        '''
->>>>>>> e842a9d13875580565c66faf167d260a8f9bb61a
         Called when player connects.
         - player_id - opaque value
         """
