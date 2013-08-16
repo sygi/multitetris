@@ -16,11 +16,37 @@ def draw_menu():
     pass
 
 
-def draw_game():
+def draw_game(display):
     """
     Game screen
     """
-    pass
+    # TODO
+    blockpixsize = consts['block_element_size']
+    
+    def draw_the_blocks():
+        def blockPos_to_pixPos(BPX, BPY):
+            # Blocks should be displayed in a grid in "virtual window" placed somewhere in game window, currently starting from (10,200)
+            return (10 + BPX * blockpixsize, 200 + BPY * blockpixsize)
+        def draw_block_element(BlockPosX, BlockPosY):
+            # Draw a block element in a block's array
+            X, Y = blockPos_to_pixPos(BlockPosX, BlockPosY)
+            pygame.draw.rect(display, colors['block_border'], (X, Y, blockpixsize, blockpixsize), 1)
+            pygame.draw.rect(display, colors['block_inner'], (1+X, 1+Y, blockpixsize-2, blockpixsize-2), 0)
+        def draw_the_grid():
+            for i in range(consts['number_of_rows']*blockpixsize):
+                for j in range(consts['columns_per_player']*blockpixsize):
+                    X, Y = blockPos_to_pixPos(i, j)
+                    pygame.draw.rect(display, colors['block_border'], (X, Y, blockpixsize, blockpixsize), 1)
+        # finally, do sth
+        for i in range(10):
+            for j in range(10):
+                draw_block_element(i, j)
+        
+        draw_the_grid()
+        # end of draw_the_blocks()
+    
+    display.fill(colors['semirandom'])
+    draw_the_blocks()
 
 
 def draw_about():
@@ -56,7 +82,6 @@ def draw():
 ########################
 # PyGame init
 ########################
-blockpixsize = consts['block_element_size']
 dmsg = '' # debug msg
 
 pygame.init()
@@ -65,7 +90,6 @@ fps_clock = pygame.time.Clock()  # FPS limiter
 display = pygame.display.set_mode((consts['window_width'], consts['window_height']), DOUBLEBUF)
 pygame.display.set_caption("Multitetris")
 
-fontObj = pygame.font.Font('freesansbold.ttf', 30)
 quit_request = False
 
 ########################
@@ -73,7 +97,7 @@ quit_request = False
 ########################
 while not quit_request:
     display.fill(pygame.Color(0, 0, 0))
-
+    
     for event in pygame.event.get():
         if event.type == QUIT:
             quit_request = True
@@ -82,18 +106,10 @@ while not quit_request:
         elif event.type == KEYDOWN:
             if event.key == K_ESCAPE:
                 quit_request = True
-
+    
+    draw_game(display)
+    
     pygame.display.update()
     fps_clock.tick(config['max_fps'])
-
-
-def block_pos_to_pix_pos(x, y):
-    return 10 + x * blockpixsize, 200 + y * blockpixsize
-
-
-def draw_block_element(x, y):
-    x, y = block_pos_to_pix_pos(x, y)
-    pygame.draw.rect(window, colors['block-border'], (x, y, blockpixsize, blockpixsize))
-    pygame.draw.rect(window, colors['block-inner'], (x+1, y+1, blockpixsize-2, blockpixsize-2))
 
 pygame.quit()
