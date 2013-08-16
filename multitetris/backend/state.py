@@ -47,10 +47,39 @@ class Board(object):
     """
     pass
 
-class Brick(object):
+class Brick(object):	
     """
     One 4-box brick in move
     """
+	class Type(object):
+		LONG, DUCK, SQR, STAIR = range(4)
+	def __init__(self, enum, pos_x, pos_y):
+		if (enum == Type.LONG):
+			self.state_table = [
+			["0100","0100","0100","0100"],
+			["0000","0000","0000","1111"],
+			["0100","0100","0100","0100"],
+			["0000","0000","0000","1111"]]
+		elif (enum == Type.DUCK):
+			self.state_table = [
+			["0000","0000","0110","1100"],
+			["0000","1000","1100","0100"],
+			["0000","0000","0110","1100"],
+			["0000","1000","1100","0100"]]
+		elif (enum == Type.SQR):
+			self.state_table = [
+			["0000","0000","1100","1100"],
+			["0000","0000","1100","1100"],
+			["0000","0000","1100","1100"],
+			["0000","0000","1100","1100"]]
+		elif (enum == Type.STAIR):
+			self.state_table = [
+			["0000","0000","0100","1110"],
+			["0000","0100","1100","0100"],
+			["0000","0000","1110","0100"],
+			["0000","1000","1100","1000"]]
+		self.state = 0;
+			
     pass
 
 class Box(object):
