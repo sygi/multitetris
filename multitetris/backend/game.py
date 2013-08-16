@@ -1,6 +1,7 @@
 from .brick import Brick
 
 import random
+import collections
 
 class Game(object):
     def __init__(self):
@@ -35,14 +36,14 @@ class Game(object):
         - pos - tuple of ints
         - color
         '''
-        class BoardBrick:
-            def __init__(self, pos, color):
-                self.pos = pos
-                self.color = color
-
-        return self.bricks.values() + [
+        BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
+        board = [
             BoardBrick(pos, color)
             for pos, color in self.board.items() ]
+        for brick in self.bricks.values():
+            for pos in brick.to_box_list():
+                board.append(BoardBrick(pos, brick.color))
+        return board
 
     def get_board_size(self):
         '''
