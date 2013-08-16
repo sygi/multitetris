@@ -1,6 +1,7 @@
 import threading
 import socket
-import select
+import json
+import time
 
 WRITE_TIMEOUT = 0.1
 TICK_TIMEOUT = 0.1
@@ -12,7 +13,7 @@ def main(game):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(('localhost', 9999))
     sock.listen(3)
-    threading.Thread(target=ticker, args=[game])
+    threading.Thread(target=ticker, args=[game]).start()
     while True:
         client_sock, addr = sock.accept()
 
@@ -22,7 +23,7 @@ def main(game):
 def client_writer(game, addr, sock):
     while True:
         with global_lock:
-            state = game.get_state()
+            state = game.get_state(addr)
         sock.sendall(json.dumps(state) + '\n')
         time.sleep(WRITE_TIMEOUT)
 
@@ -38,4 +39,5 @@ def ticker(game):
         time.sleep(TICK_TIMEOUT)
 
 if __name__ == '__main__':
-    main()
+    from .mock import Game
+    main(Game())
