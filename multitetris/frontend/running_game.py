@@ -1,15 +1,11 @@
-
 import pygame
 from pygame.locals import * # constants
 
 pygame.init()
-fpsClock = pygame.time.Clock() # FPS
+fps_clock = pygame.time.Clock() # FPS
 
-const_maxwindowwidth = 20 * 10 * 5 # maxplayers * columnsperplayer * blockelementsize
-const_maxwindowgeight = 50 * 5 + 300 # rowsperplayer * blockelementsize + whatever
-
-windowSurfaceObj = pygame.display.set_mode((const_maxwindowwidth, const_maxwindowgeight))
-pygame.display.set_caption("The game of Multitetris is running.") # window title
+display = pygame.display.set_mode((const_windowwidth, const_windowgeight))
+pygame.display.set_caption("Multitetris") # window title
 
 fontObj = pygame.font.Font('freesansbold.ttf', 30)
 
