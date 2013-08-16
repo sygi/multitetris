@@ -1,3 +1,5 @@
+"""To be removed"""
+
 from .mock import Box
 
 class Board(object):

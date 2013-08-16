@@ -7,8 +7,8 @@ class TestBox(unittest.TestCase):
 
 class TestBoard(unittest.TestCase):
 	def test_create_board(self):
-		from multitetris.backend.board import Board
-		board = Board(100, 100)
+		from multitetris.backend.game import Game
+		board = Game().get_board()
 
 unittest.main()
 
