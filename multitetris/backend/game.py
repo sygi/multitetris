@@ -37,7 +37,6 @@ class Game(object):
 
         self.player_pos[player_id] = self.next_player_pos
         self.next_player_pos += 5
-        self.next_player_pos %= self.get_board_size()[0]
 
         self.width += self.width_delta
 
