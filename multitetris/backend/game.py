@@ -24,8 +24,8 @@ class Game(object):
 
         self.width_delta = 15 # It can be changed later
         self.width = 10
-        self.height = 40
-        
+        self.height = 100
+
         self.points_delta = 100; # It can be changed later, too
 
     def add_player(self, player_id):
@@ -131,7 +131,7 @@ class Game(object):
             if player_id not in self.bricks:
                 brick = Brick(0,
                               (self.get_player_position(player_id),
-                               self.get_board_size()[0],),
+                               0),
                               player_id, color)
                 self.bricks[player_id] = brick
         for player_id, brick in self.bricks.items():

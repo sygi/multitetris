@@ -78,29 +78,29 @@ class Brick(object):
 
     # we're looking for collisions with board other than with
     # the brick former self
-                
+
     def rotate(self, board_width):
         self.state += 1
         self.state %= 4
-    
+
     def rotate_back(self, board_width):
         self.state += 3
         self.state %= 4
-        
+
     def move_left(self, board_width):
         self.pos_x -= 1
         self.pos_x %= board_width
-        
+
     def move_right(self, board_width):
         self.pos_x += 1
         self.pos_x %= board_width
-        
+
     def move_down(self, board_width):
         self.pos_y += 1
-        
+
     def move_up(self, board_width):
         self.pos_y -= 1
-    
+
     def is_collision_with_board(self, bricks, board, board_width, board_height):
         """
         returns True on collision
@@ -108,6 +108,7 @@ class Brick(object):
         self_boxes = self.to_box_list(board_width)
         for box in self_boxes:
             if box.pos[1] > board_height:
+                print 'stopping of height', self.pos
                 return True
 
         for brick in bricks.values():
@@ -117,7 +118,7 @@ class Brick(object):
                 for self_box in self_boxes:
                     if self_box.pos == box.pos:
                         return True
-        
+
         for box_pos in board.keys():
             for self_box in self_boxes:
                 if self_box.pos == box_pos:
