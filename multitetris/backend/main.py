@@ -22,9 +22,12 @@ def main(game, bindto):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(bindto)
     sock.listen(3)
+    to_print = map(str, bindto)
+    print "Server socket listening on (%s, %s)" % tuple(to_print)
     threading.Thread(target=ticker, args=[game]).start()
     while True:
         client_sock, addr = sock.accept()
+        print "Server accepted connection from client"
 
         threading.Thread(target=client_reader, args=[game, addr, client_sock]).start()
         threading.Thread(target=client_writer, args=[game, addr, client_sock]).start()
@@ -39,7 +42,11 @@ def client_writer(game, addr, sock):
             state = make_state(board=game.get_board(),
                                addr=addr,
                                game=game)
-        sock.sendall(json.dumps(state) + '\n')
+        try:
+            sock.sendall(json.dumps(state) + '\n')
+        except socket.error as e:
+            print 'Client dropped:', e
+            break
         with global_new_state_condition:
             global_new_state_condition.wait()
 
@@ -62,7 +69,11 @@ def client_reader(game, addr, sock):
     with global_lock:
         game.add_player(addr)
     while True:
-        move = sock.recv(1)
+        try:
+            move = sock.recv(1)
+        except socket.error as e:
+            print 'Client dropped:', e
+            break
         if not move:
             break
         with global_lock:

@@ -1,6 +1,9 @@
-import collections 
+import collections
+
+
 class Type(object):
     LONG, DUCK_L, DUCK_R, SQR, STAIR = range(5)
+
 
 class Brick(object):
     """
@@ -20,47 +23,50 @@ class Brick(object):
     def init_type(self, enum, pos_x, pos_y):
         if enum == Type.LONG:
             self.state_table = [
-                ["0100","0100","0100","0100"],
-                ["0000","0000","0000","1111"],
-                ["0100","0100","0100","0100"],
-                ["0000","0000","0000","1111"]]
-            self.pos_y = pos_y+3
-            self.pos_x = pos_x-1
+                ["0100", "0100", "0100", "0100"],
+                ["0000", "0000", "0000", "1111"],
+                ["0100", "0100", "0100", "0100"],
+                ["0000", "0000", "0000", "1111"]]
+            self.pos_y = pos_y + 3
+            self.pos_x = pos_x - 1
         elif enum == Type.DUCK_L:
             self.state_table = [
-                ["0000","0000","0110","1100"],
-                ["0000","1000","1100","0100"],
-                ["0000","0000","0110","1100"],
-                ["0000","1000","1100","0100"]]
-            self.pos_x = pos_x+1
-            self.pos_y = pos_y-1
+                ["0000", "0000", "0110", "1100"],
+                ["0000", "1000", "1100", "0100"],
+                ["0000", "0000", "0110", "1100"],
+                ["0000", "1000", "1100", "0100"]]
+            self.pos_x = pos_x + 1
+            self.pos_y = pos_y - 1
         elif enum == Type.DUCK_R:
             self.state_table = [
-                ["0000","0000","1100","0110"],
-                ["0000","0100","1100","1000"],
-                ["0000","0000","1100","0110"],
-                ["0000","0100","1100","1000"]]
-            self.pos_x = pos_x+1
-            self.pos_y = pos_y-1
+                ["0000", "0000", "1100", "0110"],
+                ["0000", "0100", "1100", "1000"],
+                ["0000", "0000", "1100", "0110"],
+                ["0000", "0100", "1100", "1000"]]
+            self.pos_x = pos_x + 1
+            self.pos_y = pos_y - 1
         elif enum == Type.SQR:
             self.state_table = [
-                ["0000","0000","1100","1100"],
-                ["0000","0000","1100","1100"],
-                ["0000","0000","1100","1100"],
-                ["0000","0000","1100","1100"]]
-            self.pos_x = pos_x+1
-            self.pos_y = pos_y-1
+                ["0000", "0000", "1100", "1100"],
+                ["0000", "0000", "1100", "1100"],
+                ["0000", "0000", "1100", "1100"],
+                ["0000", "0000", "1100", "1100"]]
+            self.pos_x = pos_x + 1
+            self.pos_y = pos_y - 1
         elif enum == Type.STAIR:
             self.state_table = [
-                ["0000","0000","0100","1110"],
-                ["0000","0100","1100","0100"],
-                ["0000","0000","1110","0100"],
-                ["0000","1000","1100","1000"]]
-            self.pos_x = pos_x+1
-            self.pos_y = pos_y-1
+                ["0000", "0000", "0100", "1110"],
+                ["0000", "0100", "1100", "0100"],
+                ["0000", "0000", "1110", "0100"],
+                ["0000", "1000", "1100", "1000"]]
+            self.pos_x = pos_x + 1
+            self.pos_y = pos_y - 1
 
-    #boxes are touples: BoardBrick((pos_x,pos_y),color)
+    # boxes are touples: BoardBrick((pos_x,pos_y),color)
     def to_box_list(self):
+        """
+        Returns list of BoardBricks (boxes);
+        """
         ls = []
         for iy in range(4):
             for ix in range(4):
@@ -72,14 +78,41 @@ class Brick(object):
 
     # we're looking for collisions with board other than with
     # the brick former self
-    def is_collision_with_board(old_box_list):
-        new_box_list = self.to_box_list()
-        for i in len(new_box_list):
-            for old_box in old_box_list:
-                if new_box_list[i].x == old_box.x and new_box_list[i].y == old_box.y:
-                    del new_box_list[i]
-        for box in new_box_list:
-            if self.board.is_box_at(box.x,box.y):
-                return True
+                
+    def rotate(self):
+        self.state += 1
+        self.state %= 4
+    
+    def rotate_back(self):
+        self.state += 3
+        self.state %= 4
+        
+    def move_left(self):
+        self.pos_x -= 1
+        
+    def move_right(self):
+        self.pos_x += 1
+        
+    def move_down(self):
+        self.pos_y += 1
+        
+    def move_up(self):
+        self.pos_y -= 1
+        
+    def is_collision_with_board(self, bricks, board):
+        """
+        returns True on collision
+        """
+        self_boxes = self.to_box_list()
+        for brick in bricks:
+            for box in brick.to_box_list():
+                for self_box in self_boxes:
+                    if self_box.pos == box.pos:
+                        return True
+        for box_pos in board.keys():
+			for self_box in self_boxes:
+				if self_box.pos == box_pos:
+					return True
+        return False
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
