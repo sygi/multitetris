@@ -107,10 +107,10 @@ class Brick(object):
         """
         self_boxes = self.to_box_list(board_width)
         for box in self_boxes:
-            if box.pos[1] < 0:
+            if box.pos[1] > board_height:
                 return True
 
-        for brick in bricks:
+        for brick in bricks.values():
             if brick is self:
                 continue
             for box in brick.to_box_list(board_width):
