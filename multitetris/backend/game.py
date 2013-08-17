@@ -21,6 +21,10 @@ class Game(object):
 
         self.next_player_pos = 1
 
+        self.width_delta = 15 # It can be changed later
+        self.width = 0
+        self.height = 40
+
     def add_player(self, player_id):
         """
         Called when player connects.
@@ -34,6 +38,8 @@ class Game(object):
         self.player_pos[player_id] = self.next_player_pos
         self.next_player_pos += 5
         self.next_player_pos %= self.get_board_size()[0]
+
+        self.width += self.width_delta
 
     def get_board(self):
         '''
@@ -54,7 +60,7 @@ class Game(object):
         '''
         Returns board size
         '''
-        return 40, 80
+        return self.width, self.height
 
     def get_points(self):
         '''(2, 4, color)
@@ -76,26 +82,18 @@ class Game(object):
         player_id - opaque value to be stored in brick
         """
         player_brick = self.bricks[player_id]
-        if ch == 'U':
-            player_brick.rotate()
-            if player_brick.is_collision_with_board(self.board, self.bricks):
-                player_brick.rotate_back();
-                return False
-        elif ch == 'L':
-            player_brick.move_left()
-            if player_brick.is_collision_with_board(self.board, self.bricks):
-                player_brick.move_right()
-                return False
-        elif ch == 'R':
-            player_brick.move_right()
-            if player_brick.is_collision_with_board(self.board, self.bricks):
-                player_brick.move_left()
-                return False
-        elif ch == 'D':
-            player_brick.move_down()
-            if player_brick.is_collision_with_board(self.board, self.bricks):
-                player_brick.move_up()
-                return False
+        function = {
+            'U': (player_brick.rotate, player_brick.rotate_back),
+            'L': (player_brick.move_left, player_brick.move_right),
+            'R': (player_brick.move_right, player_brick.move_left),
+            'D': (player_brick.move_up, player_brick.move_down),
+            }
+        if ch in function:
+            do, do_back = function[ch]
+            do()
+            if player_brick.is_collision_with_board(
+                    self.board, self.bricks, self.width, self.height):
+                do_back()
 
         return True
 
@@ -110,10 +108,9 @@ class Game(object):
                 self.bricks[player_id] = brick
         for player_id, brick in self.bricks.items():
             if not self.move(player_id, 'D'):
-				self._freeze_brick(brick)
+                self._freeze_brick(brick)
 
     def _freeze_brick(self, brick):
-		boxes = brick.to_box_list()
-		for box in boxes:
-			self.board[box.pos] = box.color
-		del brick
+        print 'freeze', brick.to_box_list()
+        for box in brick.to_box_list():
+            self.board[box.pos] = box.color

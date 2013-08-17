@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-import socket
 import json
 import os
 
@@ -102,8 +101,8 @@ def screen_pos(pos):
 ########################
 # Main loop
 ########################
-def run():
-    cur_connection = connection.Connection("127.0.0.1")
+def run(addr="localhost"):
+    cur_connection = connection.Connection(addr)
 
     pygame.init()
     fps_clock = pygame.time.Clock()  # FPS limiter
