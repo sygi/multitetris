@@ -4,6 +4,7 @@ import socket
 import json
 
 from .common import consts
+from . import connection
 
 ########################
 # Globals
@@ -11,8 +12,10 @@ from .common import consts
 
 mousex,mousey = 0,0
 cur_screen = 'MENU'
-bricks = []
+board = None
+points = 0
 SIZE = (15, 15)
+cur_connection = None
 
 ########################
 # Drawing functions
@@ -31,8 +34,6 @@ def draw_game(display):
     """
     line_color = (100, 100, 100)
     blockpixsize = consts.block_element_size
-
-    state = read_state()
 
     display.fill((123, 230, 58))
     pass
@@ -59,6 +60,26 @@ def draw_join(display):
     pass
 
 ########################
+# Controls
+########################
+
+def on_key_LEFT():
+    if cur_connection:
+        cur_connection.move('L')
+
+def on_key_RIGHT():
+    if cur_connection:
+        cur_connection.move('R')
+
+def on_key_UP():
+    if cur_connection:
+        cur_connection.move('U')
+
+def on_key_DOWN():
+    if cur_connection:
+        cur_connection.move('D')
+
+########################
 # Helper functions
 ########################
 
@@ -66,17 +87,17 @@ def screen_pos(pos):
     return (pos[0] * SIZE[0],
             consts.window_height - pos[1] * SIZE[1])
 
-def read_state():
-    return json.loads(sockf.readline())
+class DoUpdate(object):
+    def on_board_update(new_board):
+        board = new_board
+    def on_points_update(new_points):
+        points = new_points
 
 ########################
 # Main loop
 ########################
 def run():
-    global sock, sockf
-    sock = socket.socket()
-    sock.connect(('localhost', 9999))
-    sockf = sock.makefile('r+')
+    cur_connection = connection.Connection("127.0.0.1", DoUpdate)
 
     pygame.init()
     fps_clock = pygame.time.Clock()  # FPS limiter
@@ -98,6 +119,14 @@ def run():
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     quit_request = True
+                elif event.key == K_LEFT:
+                    on_key_LEFT()
+                elif event.key == K_RIGHT:
+                    on_key_RIGHT()
+                elif event.key == K_UP:
+                    on_key_UP()
+                elif event.key == K_DOWN:
+                    on_key_DOWN()
 
         draw_game(display)
 
