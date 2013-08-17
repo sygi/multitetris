@@ -92,7 +92,7 @@ class Game(object):
             do, do_back = function[ch]
             do()
             if player_brick.is_collision_with_board(
-                    self.board, self.bricks):
+                    self.board, self.bricks, self.width, self.height):
                 do_back()
 
         return True
