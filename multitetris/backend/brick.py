@@ -1,5 +1,4 @@
-import collections
-
+import collections 
 class Type(object):
     LONG, DUCK_L, DUCK_R, SQR, STAIR = range(5)
 
@@ -82,7 +81,5 @@ class Brick(object):
         for box in new_box_list:
             if self.board.is_box_at(box.x,box.y):
                 return True
-                
-    # potential moves
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
