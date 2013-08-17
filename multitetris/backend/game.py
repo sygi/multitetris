@@ -35,7 +35,7 @@ class Game(object):
 
     def get_board(self):
         '''
-        Returns list of bricks.
+        Returns list of BoardBricks.
         duck Brick:
         - pos - tuple of ints
         - color
