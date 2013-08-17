@@ -3,7 +3,9 @@ from .brick import Brick
 import random
 import collections
 
+
 class Game(object):
+
     def __init__(self):
         """
         Dictionary mapping position on the board to color 
@@ -43,7 +45,7 @@ class Game(object):
         BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
         board = [
             BoardBrick(pos, color)
-            for pos, color in self.board.items() ]
+            for pos, color in self.board.items()]
         for brick in self.bricks.values():
             for pos in brick.to_box_list():
                 board.append(BoardBrick(pos, brick.color))
@@ -59,7 +61,7 @@ class Game(object):
         '''(2, 4, color)
         Returns dict of players' id and points
         '''
-        return {'127.0.0.1': 300, 'localhost':150}
+        return {'127.0.0.1': 300, 'localhost': 150}
 
     def get_player_position(self, player_id):
         '''
