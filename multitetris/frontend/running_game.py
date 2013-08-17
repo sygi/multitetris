@@ -1,6 +1,5 @@
 import pygame
 from pygame.locals import *
-import socket
 import json
 
 from .common import consts
@@ -96,8 +95,8 @@ class DoUpdate(object):
 ########################
 # Main loop
 ########################
-def run():
-    cur_connection = connection.Connection("127.0.0.1", DoUpdate)
+def run(addr="localhost"):
+    cur_connection = connection.Connection(addr, DoUpdate)
 
     pygame.init()
     fps_clock = pygame.time.Clock()  # FPS limiter
