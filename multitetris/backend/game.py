@@ -21,7 +21,7 @@ class Game(object):
 
         self.next_player_pos = 1
 
-        self.width_delta = 15'''It can be changed later'''
+        self.width_delta = 15 # It can be changed later
         self.width = 0
         self.height = 40
 

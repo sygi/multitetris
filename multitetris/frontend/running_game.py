@@ -1,6 +1,7 @@
 import pygame
 from pygame.locals import *
 import json
+import os
 
 from .common import consts
 from . import connection
@@ -10,9 +11,7 @@ from . import connection
 ########################
 
 mousex,mousey = 0,0
-cur_screen = 'MENU'
-board = None
-points = 0
+cur_screen = 'GAME'
 SIZE = (15, 15)
 cur_connection = None
 
@@ -58,6 +57,19 @@ def draw_join(display):
     """
     pass
 
+def draw(display):
+    """
+    Main draw function
+    """
+    if   cur_screen == 'MENU'   : draw_menu(display)
+    elif cur_screen == 'GAME'   : draw_game(display)
+    elif cur_screen == 'ABOUT'  : draw_about(display)
+    elif cur_screen == 'LOADING': draw_loading(display)
+    elif cur_screen == 'JOIN'   : draw_join(display)
+    else:
+        raise Exception('Unknown screen name!')
+    pass
+
 ########################
 # Controls
 ########################
@@ -86,17 +98,11 @@ def screen_pos(pos):
     return (pos[0] * SIZE[0],
             consts.window_height - pos[1] * SIZE[1])
 
-class DoUpdate(object):
-    def on_board_update(new_board):
-        board = new_board
-    def on_points_update(new_points):
-        points = new_points
-
 ########################
 # Main loop
 ########################
 def run(addr="localhost"):
-    cur_connection = connection.Connection(addr, DoUpdate)
+    cur_connection = connection.Connection(addr)
 
     pygame.init()
     fps_clock = pygame.time.Clock()  # FPS limiter
@@ -104,6 +110,7 @@ def run(addr="localhost"):
     display = pygame.display.set_mode((
         consts.window_width, consts.window_height))
     pygame.display.set_caption("Multitetris")
+    pygame.key.set_repeat(500, 500)  # (delay, interval) - how many KEYDOWN events when holding a key, in ms
 
     quit_request = False
 
@@ -127,12 +134,13 @@ def run(addr="localhost"):
                 elif event.key == K_DOWN:
                     on_key_DOWN()
 
-        draw_game(display)
+        draw(display)
 
         pygame.display.flip()
         fps_clock.tick(20)
 
     pygame.quit()
+    os._exit(0)
 
 if __name__ == '__main__':
     run()

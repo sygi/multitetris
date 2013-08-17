@@ -100,21 +100,28 @@ class Brick(object):
         
     def move_up(self):
         self.pos_y -= 1
-        
-    def is_collision_with_board(self, bricks, board):
+    
+    def is_collision_with_board(self, bricks, board, board_width, board_height):
         """
         returns True on collision
         """
-        self_boxes = self.to_box_list()
+        self_boxes = self.to_box_list(board_width)
+        for box in self_boxes:
+            if box.pos[1] < 0:
+                return True
+
         for brick in bricks:
-            for box in brick.to_box_list():
+            if brick is self:
+                continue
+            for box in brick.to_box_list(board_width):
                 for self_box in self_boxes:
                     if self_box.pos == box.pos:
                         return True
+        
         for box_pos in board.keys():
-			for self_box in self_boxes:
-				if self_box.pos == box_pos:
-					return True
+            for self_box in self_boxes:
+                if self_box.pos == box_pos:
+                    return True
         return False
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')

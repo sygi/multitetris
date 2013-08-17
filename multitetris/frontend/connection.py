@@ -5,9 +5,8 @@ import Queue
 import sys
 
 class Connection(object):
-    def __init__(self, ip_address, on_update):
+    def __init__(self, ip_address):
         self.ip_address = ip_address
-        self.on_update = on_update
         self.state = None
         # connection
         self.sock = socket.socket()
