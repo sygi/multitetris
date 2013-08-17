@@ -70,7 +70,7 @@ class Game(object):
     def move(self, player_id, ch):
         """
         Called when client requests his brick to move.
-        ch - passed from frontent
+        ch - passed from frontent ("L","R","U","D")
         player_id - opaque value to be stored in brick
         """
         print('MOVE %r' % ch)

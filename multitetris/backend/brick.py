@@ -61,6 +61,9 @@ class Brick(object):
 
     #boxes are touples: BoardBrick((pos_x,pos_y),color)
     def to_box_list(self):
+        """
+        Returns list of BoardBricks (boxes);
+        """
         ls = []
         for iy in range(4):
             for ix in range(4):
@@ -70,16 +73,19 @@ class Brick(object):
                         self.color))
         return ls
 
+   
     # we're looking for collisions with board other than with
     # the brick former self
-    def is_collision_with_board(old_box_list):
-        new_box_list = self.to_box_list()
-        for i in len(new_box_list):
-            for old_box in old_box_list:
-                if new_box_list[i].x == old_box.x and new_box_list[i].y == old_box.y:
-                    del new_box_list[i]
-        for box in new_box_list:
-            if self.board.is_box_at(box.x,box.y):
-                return True
+    def is_collision_with_board(bricks, board):
+        """
+        returns True on collision
+        """
+        self_boxes = self.to_box_list()
+        for brick in bricks:
+            for box in brick.to_box_list():
+                for self_box in self_boxes:
+                    if self_box.pos == box.pos:
+                        return True
+        return False
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
