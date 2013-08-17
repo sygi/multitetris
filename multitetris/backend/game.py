@@ -13,8 +13,6 @@ class Game(object):
         self.bricks = {}
 
         self.width = 10
-        #self.height = 100 # I guess it can be removed
-
         self.height = 40
         self.width_per_player = 10 # It can be changed later
 
@@ -115,7 +113,7 @@ class Game(object):
             do, do_back = functions[ch]
             do(self.width)
             if player_brick.is_collision_with_board(
-                    self.board, self.bricks, self.width, self.height):
+                    self.bricks, self.board, self.width, self.height):
                 do_back(self.width)
             else:
                 return True
@@ -126,14 +124,12 @@ class Game(object):
         for player_id in self.players_points.keys():
             color = (128, 0, 128)
             if player_id not in self.bricks:
-                #brick = Brick(0, # Do you have to get LONG brick every time you start?
                 brick = Brick(random.randint(0,4),
                               (self.get_player_position(player_id),
                                0),
                               player_id, color)
                 self.bricks[player_id] = brick
         for player_id, brick in self.bricks.items():
-            print 'A', brick.pos
+            print 'brick.pos', brick.pos
             if not self.move(player_id, 'D'):
                 self._freeze_brick(brick)
-            print 'B', brick.pos
