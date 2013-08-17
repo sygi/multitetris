@@ -78,7 +78,7 @@ class Brick(object):
 
     # we're looking for collisions with board other than with
     # the brick former self
-    def is_collision_with_board(bricks, board):
+    def is_collision_with_board(self, bricks, board):
         """
         returns True on collision
         """

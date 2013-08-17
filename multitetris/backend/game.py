@@ -77,7 +77,7 @@ class Game(object):
         player_brick = self.bricks[player.id]
         if ch == 'U':
             player_brick.rotate()
-            if player_brick.is_collision_with_board(self.board)
+            if player_brick.is_collision_with_board(self.board):
                 player_brick.rotate_back();
         else if ch == 'L'
             player_brick.move_left()
