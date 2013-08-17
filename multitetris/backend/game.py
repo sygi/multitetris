@@ -18,12 +18,15 @@ class Game(object):
         self.bricks = {}
         self.player_colors = {}
         self.player_pos = {}
+        self.player_points = {}
 
         self.next_player_pos = 1
 
         self.width_delta = 15 # It can be changed later
         self.width = 10
         self.height = 40
+        
+        self.points_delta = 100; # It can be changed later, too
 
     def add_player(self, player_id):
         """
@@ -37,8 +40,9 @@ class Game(object):
 
         self.player_pos[player_id] = self.next_player_pos
         self.next_player_pos += 5
+        self.player_points[player_id] = 0
 
-        self.width += self.width_delta
+        self.width = len(self.player_points) * self.points_delta
 
     def get_board(self):
         '''
