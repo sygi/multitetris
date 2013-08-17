@@ -10,19 +10,17 @@ from common import consts as frontend_consts
 and so on.
 """
 
-consts = {
+class consts:
+    pass
+
+consts.__dict__ = {
     'block_element_size': 5,
     'number_of_rows': 30,
     'columns_per_player': 10,
     'max_players': 10,
     'window_width': 800,
     'window_height': 600,
-    'tab_width': 200,
-}
-
-config = {
-    'max_fps': 60,
-}
+    'tab_width': 200}
 
 colors = {
     'semirandom': Color(123, 230, 58),

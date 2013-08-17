@@ -1,3 +1,5 @@
+import collections
+
 class Type(object):
     LONG, DUCK_L, DUCK_R, SQR, STAIR = range(5)
 
@@ -63,10 +65,15 @@ class Brick(object):
         for iy in range(4):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
+<<<<<<< HEAD
                     ls.append(((self.pos_x + ix, self.pos_y - 3 + iy), self.color))
+=======
+                    ls.append(BoardBrick(
+                        (self.pos_x + ix, self.pos_y + 3 - iy),
+                        self.color))
+>>>>>>> 476a356f1a58317622f1c3d4eeddac635aea1abf
         return ls
 
-    
     # we're looking for collisions with board other than with
     # the brick former self
     def is_collision_with_board(old_box_list):
@@ -76,37 +83,7 @@ class Brick(object):
                 if new_box_list[i].x == old_box.x and new_box_list[i].y == old_box.y:
                     del new_box_list[i]
         for box in new_box_list:
-            if self.board.is_box_at(box.x,box.y):				
+            if self.board.is_box_at(box.x,box.y):
                 return True
 
-                """
-    def collides_with_board(self, board):
-        for box in self.to_box_list():
-            if (box.x, box.y) in board:
-                return True
-
-        return False
-                
-    def is_collision_with_brick(brick):
-        enemy_boxes = brick.to_box_list()
-        for my_box in self.to_box_list():
-            for enemy_box in enemy_boxes:
-                if enemy_box.x == my_box.x and enemy_box.y == my_box.y:
-                    return True
-"""
-
-
-class Box(object):
-    """
-    Deprecated - we're going to use tuples: (pos, color) instead
-    """
-    def __init__(self, x, y, color):
-        self.x = x
-        self.y = y
-        self.color = color
-
-    def __str__(self):
-    	return "(%d, %d, color)" % (self.x, self.y)
-
-
-    	
+BoardBrick = collections.namedtuple('BoardBrick', 'pos color')

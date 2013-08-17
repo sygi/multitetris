@@ -62,7 +62,7 @@ def client_reader(game, addr, sock):
     with global_lock:
         game.add_player(addr)
     while True:
-        move = sock.recv(1) # TODO: json convertion
+        move = sock.recv(1)
         if not move:
             break
         with global_lock:
