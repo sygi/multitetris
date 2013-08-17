@@ -122,7 +122,7 @@ class Game(object):
     def tick(self):
         """Called each TICK_TIMEOUT."""
         for player_id in self.players_points.keys():
-            color = (128, 0, 128)
+            color = (128, 0, 128) # needs to be changed
             if player_id not in self.bricks:
                 brick = Brick(random.randint(0,4),
                               (self.get_player_position(player_id),
@@ -133,3 +133,4 @@ class Game(object):
             print 'brick.pos', brick.pos
             if not self.move(player_id, 'D'):
                 self._freeze_brick(brick)
+                del self.bricks[player_id]
