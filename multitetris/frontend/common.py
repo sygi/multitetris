@@ -15,7 +15,7 @@ class consts:
 
 consts.__dict__ = {
     'block_element_size': 12,
-    'number_of_rows': 46,
+    'number_of_rows': 40,
     'columns_per_player': 10,
     'max_players': 10,
     'window_width': 800,

@@ -35,8 +35,8 @@ class Game(object):
         self.width = players_points.len() * width_per_player
 
     def _freeze_brick(self, brick):
-        print 'freeze', brick.to_box_list()
-        for box in brick.to_box_list():
+        print 'freeze', brick.to_box_list(self.width)
+        for box in brick.to_box_list(self.width):
             self.board[box.pos] = box.color
 
     def get_board(self):
@@ -109,7 +109,7 @@ class Game(object):
             'U': (player_brick.rotate, player_brick.rotate_back),
             'L': (player_brick.move_left, player_brick.move_right),
             'R': (player_brick.move_right, player_brick.move_left),
-            'D': (player_brick.move_up, player_brick.move_down),
+            'D': (player_brick.move_down, player_brick.move_up),
             }
         if ch in functions:
             do, do_back = functions[ch]
@@ -132,5 +132,7 @@ class Game(object):
                               player_id, color)
                 self.bricks[player_id] = brick
         for player_id, brick in self.bricks.items():
+            print 'A', brick.pos
             if not self.move(player_id, 'D'):
                 self._freeze_brick(brick)
+            print 'B', brick.pos
