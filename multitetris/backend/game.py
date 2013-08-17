@@ -3,10 +3,12 @@ from .brick import Brick
 import random
 import collections
 
+
 class Game(object):
+
     def __init__(self):
         """
-        Dictionary mapping position on the board to color 
+        Dictionary mapping position on the board to color
         (contains only non-moving boxes)
         """
         self.board = {}
@@ -43,10 +45,9 @@ class Game(object):
         BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
         board = [
             BoardBrick(pos, color)
-            for pos, color in self.board.items() ]
+            for pos, color in self.board.items()]
         for brick in self.bricks.values():
-            for pos in brick.to_box_list():
-                board.append(BoardBrick(pos, brick.color))
+            board += brick.to_box_list()
         return board
 
     def get_board_size(self):
@@ -59,7 +60,7 @@ class Game(object):
         '''(2, 4, color)
         Returns dict of players' id and points
         '''
-        return {'127.0.0.1': 300, 'localhost':150}
+        return {'127.0.0.1': 300, 'localhost': 150}
 
     def get_player_position(self, player_id):
         '''
@@ -70,9 +71,26 @@ class Game(object):
     def move(self, player_id, ch):
         """
         Called when client requests his brick to move.
-        ch - passed from frontent
+        ch - passed from frontent ("L","R","U","D")
         player_id - opaque value to be stored in brick
         """
+        player_brick = self.bricks[player.id]
+        if ch == 'U':
+            player_brick.rotate()
+            if player_brick.is_collision_with_board(self.board):
+                player_brick.rotate_back();
+        else if ch == 'L'
+            player_brick.move_left()
+            if player_brick.is_collision_with_board(self.board)
+                player_brick.move_right()
+        else if ch == 'R'
+            player_brick.move_right()
+            if player_brick.is_collision_with_board(self.board)
+                player_brick.move_left()
+        else if ch == 'D'
+            player_brick.move_down()
+            if player_brick.is_collision_with_board(self.board)
+                player_brick.move_up()
         print('MOVE %r' % ch)
 
     def tick(self):
@@ -87,10 +105,11 @@ class Game(object):
 
         for player_id, brick in self.bricks.items():
             brick.pos_y -= 1
-            if brick.pos_y <= 0:
+            if brick.pos_y <= 3: # TODO
                 del self.bricks[player_id]
                 self._freeze_brick(brick)
 
     def _freeze_brick(self, brick):
-        for pos in brick.to_box_list():
-            self.board[pos] = brick.color
+        print 'freeze', brick.to_box_list()
+        for box in brick.to_box_list():
+            self.board[box.pos] = box.color

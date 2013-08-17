@@ -5,17 +5,62 @@ import json
 
 from .common import consts
 
+########################
+# Globals
+########################
+
+mousex,mousey = 0,0
+cur_screen = 'MENU'
 bricks = []
+SIZE = (15, 15)
+
+########################
+# Drawing functions
+########################
+
+def draw_menu(display):
+    """
+    Menu screen
+    """
+    pass
+
 
 def draw_game(display):
+    """
+    Game screen
+    """
     line_color = (100, 100, 100)
-    blockpixsize = consts['block_element_size']
+    blockpixsize = consts.block_element_size
 
     state = read_state()
 
     display.fill((123, 230, 58))
+    pass
 
-SIZE = (15, 15)
+
+def draw_about(display):
+    """
+    About screen
+    """
+    pass
+
+
+def draw_loading(display):
+    """
+    Loading screen
+    """
+    pass
+
+
+def draw_join(display):
+    """
+    Join screen
+    """
+    pass
+
+########################
+# Helper functions
+########################
 
 def screen_pos(pos):
     return (pos[0] * SIZE[0],
@@ -24,16 +69,9 @@ def screen_pos(pos):
 def read_state():
     return json.loads(sockf.readline())
 
-def draw_game(display):
-    state = read_state()
-    print state
-
-    for brick in state['bricks']:
-        pos = screen_pos(brick['pos'])
-        print pos + SIZE, brick['color']
-        pygame.draw.rect(display, brick['color'],
-                         pos + SIZE, 0)
-
+########################
+# Main loop
+########################
 def run():
     global sock, sockf
     sock = socket.socket()
