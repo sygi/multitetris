@@ -13,7 +13,7 @@ from . import connection
 
 mousex,mousey = 0,0
 cur_screen = 'GAME'
-SIZE = (consts.block_element_size, consts.block_element_size)
+block_size = (consts.block_element_size, consts.block_element_size)
 no_of_players = 7
 arial_font = None
 players_names = ["Player 1", "Player 2", "Player 3", "Player 4",
@@ -35,7 +35,7 @@ def draw_menu(display):
 
 def draw_box(display, color, screenpos):
     pygame.draw.rect(display, color,
-                 (screenpos[0] + 1, screenpos[1] + 1) + (SIZE[0] - 1, SIZE[1] - 1), 0)
+                 (screenpos[0] + 1, screenpos[1] + 1) + (block_size[0] - 1, block_size[1] - 1), 0)
 
 def draw_nicelinebox(display, color, innertopleft, innersizes, thicknesses, offset = [0, 0]):
     pygame.draw.rect(display, colors['line'],
@@ -48,13 +48,13 @@ def draw_nicelinebox(display, color, innertopleft, innersizes, thicknesses, offs
 def draw_main_grid(display):
     # board
     draw_nicelinebox(display, colors['line'], board_topleft,
-                [consts.columns_per_player * SIZE[0] * no_of_players, consts.number_of_rows * SIZE[1]], [2, 2])
+                [consts.columns_per_player * block_size[0] * no_of_players, consts.number_of_rows * block_size[1]], [2, 2])
     for i in range(no_of_players):
         draw_nicelinebox(display, colors['line'], playersline_topleft,
-                [consts.columns_per_player * SIZE[0] - 3, 22], [2, 2], [consts.columns_per_player * SIZE[0] * i, 0])
+                [consts.columns_per_player * block_size[0] - 3, 22], [2, 2], [consts.columns_per_player * block_size[0] * i, 0])
         text_surface = arial_font.render(players_names[i], False, colors['text'])
         text_rect = text_surface.get_rect()
-        text_rect.topleft = (playersline_topleft[0] + 5 + consts.columns_per_player * SIZE[0] * i + 10,
+        text_rect.topleft = (playersline_topleft[0] + 5 + consts.columns_per_player * block_size[0] * i + 10,
                          playersline_topleft[1] + 3)
         display.blit(text_surface, text_rect)
         
@@ -68,12 +68,12 @@ def draw_game(display):
     
     # process data from server and show bricks
     global cur_connection
+    print "CURRENT CONNECTION STATE:"
     print cur_connection.state
     if cur_connection.state:
         for brick in cur_connection.state['bricks']:
             pos = screen_pos(brick['pos'])
-            print pos + SIZE, brick['color']
-            draw_box(display, brick['color'], pos + SIZE)
+            draw_box(display, brick['color'], pos)
 
 
 def draw_about(display):
@@ -134,8 +134,8 @@ def on_key_DOWN():
 ########################
 
 def screen_pos(pos):
-    return (board_topleft[0] + pos[0] * SIZE[0],
-            board_topleft[1] + (consts.number_of_rows - pos[1] - 1) * SIZE[1] + 800)
+    return (board_topleft[0] + pos[0] * block_size[0],
+            board_topleft[1] + pos[1] * block_size[1])
 
 ########################
 # Main loop

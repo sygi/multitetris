@@ -107,7 +107,7 @@ class Brick(object):
         """
         self_boxes = self.to_box_list(board_width)
         for box in self_boxes:
-            if box.pos[1] > board_height or box.pos[1] < -2:
+            if box.pos[1] >= board_height:
                 print 'stopping of height', self.pos
                 return True
 
