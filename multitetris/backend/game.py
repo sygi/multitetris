@@ -56,7 +56,7 @@ class Game(object):
             BoardBrick(pos, color)
             for pos, color in self.board.items()]
         for brick in self.bricks.values():
-            board += brick.to_box_list()
+            board += brick.to_box_list(self.width)
         return board
 
     def get_board_size(self):
