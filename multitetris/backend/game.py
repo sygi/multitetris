@@ -69,36 +69,7 @@ class Game(object):
         return self.player_pos[player_id]
 
     def move(self, player_id, ch):
-        """
-        Called when client requests his brick to move.
-        Returns True if the brick was moved successfully, False otherwise.
-        ch - passed from frontent ("L","R","U","D")
-        player_id - opaque value to be stored in brick
-        """
-        player_brick = self.bricks[player.id]
-
-        if ch == 'U':
-            player_brick.rotate()
-            if player_brick.is_collision_with_board(self.board):
-                player_brick.rotate_back();
-                return False
-        elif ch == 'L':
-            player_brick.move_left()
-            if player_brick.is_collision_with_board(self.board):
-                player_brick.move_right()
-                return False
-        elif ch == 'R':
-            player_brick.move_right()
-            if player_brick.is_collision_with_board(self.board):
-                player_brick.move_left()
-                return False
-        elif ch == 'D':
-            player_brick.move_down()
-            if player_brick.is_collision_with_board(self.board):
-                player_brick.move_up()
-                return False
-
-        return True
+        return False
 
     def tick(self):
         """Called each TICK_TIMEOUT."""
