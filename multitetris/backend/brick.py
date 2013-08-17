@@ -66,7 +66,7 @@ class Brick(object):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
                     ls.append(BoardBrick(
-                        (self.pos_x + ix, self.pos_y + 3 - iy),
+                        (self.pos_x + ix, self.pos_y - iy),
                         self.color))
         return ls
 

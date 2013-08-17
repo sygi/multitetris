@@ -10,7 +10,7 @@ class TestBoard(unittest.TestCase):
 		from multitetris.backend.game import Game
 		board = Game().get_board()
 
-from multitetris.backend.brick import Brick, Type
+from multitetris.backend.brick import Brick, Type, BoardBrick
 class TestBrick(unittest.TestCase):
 	def test_create_brick(self):
 		brick = Brick(Type.STAIR, (1,1), 2, (1,2,3))
@@ -20,7 +20,7 @@ class TestBrick(unittest.TestCase):
 		pos = (2,2)
 		brick = Brick(Type.LONG, pos, 3, color)
 		box_list = brick.to_box_list()
-		self.assertTrue(((pos[0], pos[1]+2), color) in box_list)
+		self.assertTrue(BoardBrick((pos[0], pos[1]+2), color) in box_list)
 
 unittest.main()
 
