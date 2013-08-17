@@ -122,8 +122,9 @@ class Game(object):
             if player_brick.is_collision_with_board(
                     self.board, self.bricks, self.width, self.height):
                 do_back(self.width)
-
-        return True
+            else:
+				return True
+        return False
 
     def tick(self):
         """Called each TICK_TIMEOUT."""
