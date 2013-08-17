@@ -66,13 +66,9 @@ class Brick(object):
         for iy in range(4):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
-<<<<<<< HEAD
-                    ls.append(((self.pos_x + ix, self.pos_y - 3 + iy), self.color))
-=======
                     ls.append(BoardBrick(
                         (self.pos_x + ix, self.pos_y + 3 - iy),
                         self.color))
->>>>>>> 476a356f1a58317622f1c3d4eeddac635aea1abf
         return ls
 
     # we're looking for collisions with board other than with
