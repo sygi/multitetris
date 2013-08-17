@@ -15,7 +15,7 @@ mousex,mousey = 0,0
 cur_screen = 'GAME'
 SIZE = (consts.block_element_size, consts.block_element_size)
 no_of_players = 7
-fontObj = None
+arial_font = None
 players_names = ["Player 1", "Player 2", "Player 3", "Player 4",
             "Player 5", "Player 6", "Player 7", "Player 8"]
 board_topleft = (22, 32)
@@ -59,7 +59,7 @@ def draw_main_grid(display):
                  2,
                  25
                 ), 1)
-        text_surface = fontObj.render(players_names[i], False, colors['text'])
+        text_surface = arial_font.render(players_names[i], False, colors['text'])
         text_rect = text_surface.get_rect()
         text_rect.topleft = (playersline_topleft[0] + 5 + consts.columns_per_player * SIZE[0] * i + 10,
                          playersline_topleft[1] + 3)
@@ -70,11 +70,13 @@ def draw_game(display):
     """
     Game screen
     """
+    global cur_connection
+    if not cur_connection.state:
+        return
     draw_main_grid(display)
-    state = read_state()
-    print state
-
-    for brick in state['bricks']:
+    print cur_connection.state
+    
+    for brick in cur_connection.state['bricks']:
         pos = screen_pos(brick['pos'])
         print pos + SIZE, brick['color']
         draw_box(display, brick['color'], pos + SIZE)
@@ -141,32 +143,29 @@ def screen_pos(pos):
     return (board_topleft[0] + pos[0] * SIZE[0],
             board_topleft[1] + (consts.number_of_rows - pos[1] - 1) * SIZE[1])
 
-def read_state():
-    return json.loads(sockf.readline())
-
-
 ########################
 # Main loop
 ########################
 
 def run(addr="localhost"):
-
+    global arial_font, cur_connection
+    
     cur_connection = connection.Connection(addr)
-	
-	pygame.init()
+    
+    pygame.init()
     fps_clock = pygame.time.Clock()  # FPS limiter
-
-	fontObj = pygame.font.SysFont("arial", 17)
+    
+    arial_font = pygame.font.SysFont("arial", 17)
     display = pygame.display.set_mode((
         consts.window_width, consts.window_height))
     pygame.display.set_caption("Multitetris")
     pygame.key.set_repeat(500, 500)  # (delay, interval) - how many KEYDOWN events when holding a key, in ms
-
+    
     quit_request = False
-
+    
     while not quit_request:
         display.fill((0, 0, 0))
-
+        
         for event in pygame.event.get():
             if event.type == QUIT:
                 quit_request = True
@@ -183,12 +182,12 @@ def run(addr="localhost"):
                     on_key_UP()
                 elif event.key == K_DOWN:
                     on_key_DOWN()
-
+        
         draw(display)
-
+        
         pygame.display.flip()
         fps_clock.tick(20)
-
+    
     pygame.quit()
     os._exit(0)
 
