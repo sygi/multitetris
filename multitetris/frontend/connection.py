@@ -14,7 +14,7 @@ class Connection(object):
         self.sock.connect((ip_address, 9999))
         self.sockf = self.sock.makefile('w+')
         # thread
-        threading.Thread(target=self._run).start()
+        threading.Thread(target=self._run, daemon=True).start()
 
     def _run(self):
         while True:
