@@ -3,6 +3,5 @@ multitetris
 
 Multiplayer tetris version
 
-Run server;
-
-    python -m multitetris.backend.main
+Run server:
+    ./start_server.py [bind_address port]
