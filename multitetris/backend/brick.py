@@ -63,7 +63,7 @@ class Brick(object):
             self.pos_y = pos_y - 1
 
     # boxes are touples: BoardBrick((pos_x,pos_y),color)
-    def to_box_list(self):
+    def to_box_list(self, board_width):
         """
         Returns list of BoardBricks (boxes);
         """
@@ -72,7 +72,7 @@ class Brick(object):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
                     ls.append(BoardBrick(
-                        (self.pos_x + ix, self.pos_y - iy),
+                        ((self.pos_x + ix) % board_width, self.pos_y - iy),
                         self.color))
         return ls
 
@@ -87,11 +87,13 @@ class Brick(object):
         self.state += 3
         self.state %= 4
         
-    def move_left(self):
+    def move_left(self, board_width):
         self.pos_x -= 1
+        self.pos_x %= board_width
         
-    def move_right(self):
+    def move_right(self, board_width):
         self.pos_x += 1
+        self.pos_x %= board_width
         
     def move_down(self):
         self.pos_y += 1
