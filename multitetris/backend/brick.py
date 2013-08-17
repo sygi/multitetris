@@ -25,8 +25,8 @@ class Brick(object):
                 ["0000","0000","0000","1111"],
                 ["0100","0100","0100","0100"],
                 ["0000","0000","0000","1111"]]
-            self.pos_x = pos_x+3
-            self.pos_y = pos_y-1
+            self.pos_y = pos_y+3
+            self.pos_x = pos_x-1
         elif enum == Type.DUCK_L:
             self.state_table = [
                 ["0000","0000","0110","1100"],
@@ -60,14 +60,19 @@ class Brick(object):
             self.pos_x = pos_x+1
             self.pos_y = pos_y-1
 
+    #boxes are touples: BoardBrick((pos_x,pos_y),color)
     def to_box_list(self):
         ls = []
         for iy in range(4):
             for ix in range(4):
                 if self.state_table[self.state][iy][ix] == "1":
+<<<<<<< HEAD
+                    ls.append(((self.pos_x + ix, self.pos_y - 3 + iy), self.color))
+=======
                     ls.append(BoardBrick(
                         (self.pos_x + ix, self.pos_y + 3 - iy),
                         self.color))
+>>>>>>> 476a356f1a58317622f1c3d4eeddac635aea1abf
         return ls
 
     # we're looking for collisions with board other than with
@@ -81,5 +86,7 @@ class Brick(object):
         for box in new_box_list:
             if self.board.is_box_at(box.x,box.y):
                 return True
+                
+    # potential moves
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')

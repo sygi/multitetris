@@ -6,9 +6,13 @@ import collections
 class Game(object):
     def __init__(self):
         """
-        what is board? And what is bricks?
+        Dictionary mapping position on the board to color 
+        (contains only non-moving boxes)
         """
         self.board = {}
+        """
+        Dictionary mapping player_id to actually moving brick of that player
+        """
         self.bricks = {}
         self.player_colors = {}
         self.player_pos = {}
@@ -31,7 +35,7 @@ class Game(object):
 
     def get_board(self):
         '''
-        Returns list of bricks.
+        Returns list of BoardBricks.
         duck Brick:
         - pos - tuple of ints
         - color
@@ -50,7 +54,7 @@ class Game(object):
         return 40, 80
 
     def get_points(self):
-        '''
+        '''(2, 4, color)
         Returns dict of players' id and points
         '''
         return {'127.0.0.1': 300, 'localhost':150}
