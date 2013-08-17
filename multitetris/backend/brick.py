@@ -78,6 +78,27 @@ class Brick(object):
 
     # we're looking for collisions with board other than with
     # the brick former self
+                
+    def rotate(self):
+        self.self_state += 1
+        self.self_state %= 4
+    
+    def rotate_back(self):
+        self.self_state += 3
+        self.self_state %= 4
+        
+    def move_left(self):
+        self.pos_x -= 1
+        
+    def move_right(self):
+        self.pos_x += 1
+        
+    def move_down(self):
+        self.pos_y += 1
+        
+    def move_up(self):
+        self.pos_y -= 1
+        
     def is_collision_with_board(self, bricks, board):
         """
         returns True on collision
