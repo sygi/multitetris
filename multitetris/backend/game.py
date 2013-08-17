@@ -75,7 +75,7 @@ class Game(object):
         ch - passed from frontent ("L","R","U","D")
         player_id - opaque value to be stored in brick
         """
-        player_brick = self.bricks[player.id]
+        player_brick = self.bricks[player_id]
         
         if ch == 'U':
             player_brick.rotate()
@@ -117,6 +117,7 @@ class Game(object):
 				self._freeze_brick(brick)
 
     def _freeze_brick(self, brick):
-        print 'freeze', brick.to_box_list()
-        for box in brick.to_box_list():
-            self.board[box.pos] = box.color
+		boxes = brick.to_box_list()
+		for box in boxes:
+			self.board[box.pos] = box.color
+		del brick
