@@ -6,7 +6,7 @@ import collections
 class Game(object):
     def __init__(self):
         """
-        Dictionary mapping position on the board to color 
+        Dictionary mapping position on the board to color
         (contains only non-moving boxes)
         """
         self.board = {}
@@ -45,8 +45,7 @@ class Game(object):
             BoardBrick(pos, color)
             for pos, color in self.board.items() ]
         for brick in self.bricks.values():
-            for pos in brick.to_box_list():
-                board.append(BoardBrick(pos, brick.color))
+            board += brick.to_box_list()
         return board
 
     def get_board_size(self):
@@ -87,10 +86,11 @@ class Game(object):
 
         for player_id, brick in self.bricks.items():
             brick.pos_y -= 1
-            if brick.pos_y <= 0:
+            if brick.pos_y <= 3: # TODO
                 del self.bricks[player_id]
                 self._freeze_brick(brick)
 
     def _freeze_brick(self, brick):
-        for pos in brick.to_box_list():
-            self.board[pos] = brick.color
+        print 'freeze', brick.to_box_list()
+        for box in brick.to_box_list():
+            self.board[box.pos] = box.color
