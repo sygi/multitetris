@@ -3,10 +3,12 @@ from .brick import Brick
 import random
 import collections
 
+
 class Game(object):
+
     def __init__(self):
         """
-        Dictionary mapping position on the board to color 
+        Dictionary mapping position on the board to color
         (contains only non-moving boxes)
         """
         self.board = {}
@@ -18,6 +20,10 @@ class Game(object):
         self.player_pos = {}
 
         self.next_player_pos = 1
+
+        self.width_delta = 15 # It can be changed later
+        self.width = 10
+        self.height = 40
 
     def add_player(self, player_id):
         """
@@ -31,7 +37,8 @@ class Game(object):
 
         self.player_pos[player_id] = self.next_player_pos
         self.next_player_pos += 5
-        self.next_player_pos %= self.get_board_size()[0]
+
+        self.width += self.width_delta
 
     def get_board(self):
         '''
@@ -43,23 +50,22 @@ class Game(object):
         BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
         board = [
             BoardBrick(pos, color)
-            for pos, color in self.board.items() ]
+            for pos, color in self.board.items()]
         for brick in self.bricks.values():
-            for pos in brick.to_box_list():
-                board.append(BoardBrick(pos, brick.color))
+            board += brick.to_box_list()
         return board
 
     def get_board_size(self):
         '''
         Returns board size
         '''
-        return 40, 80
+        return self.width, self.height
 
     def get_points(self):
         '''(2, 4, color)
         Returns dict of players' id and points
         '''
-        return {'127.0.0.1': 300, 'localhost':150}
+        return {'127.0.0.1': 300, 'localhost': 150}
 
     def get_player_position(self, player_id):
         '''
@@ -67,13 +73,53 @@ class Game(object):
         '''
         return self.player_pos[player_id]
 
+    def look_for_full_lines(self):
+        '''
+        Checks whether there are any full lines,
+        removes them and returns number of such lines
+        '''
+        removed_rows = 0
+        (height, width) = self.get_board_size()
+        for row in range(0, height-1):
+            full_line = True
+            #The method examines boxes on the board one by one
+            for column in range(0, width-1):
+                if (column, row) not in board:
+                    full_line = False
+                else:
+                    #If any rows were removed, the box is moved down
+                    color = board[(column, row)]
+                    del board[(column, row)]
+                    board[(column, row - removed_rows)] = color
+            #If full line was found, all boxes it contains are removed
+            if full_line == True:
+                for column in range(0, width-1):
+                    del board[(column - remowed_rows, row)]
+                removed_rows += 1
+        return removed_rows
+
     def move(self, player_id, ch):
         """
         Called when client requests his brick to move.
-        ch - passed from frontent
+        Returns True if the brick was moved successfully, False otherwise.
+        ch - passed from frontent ("L","R","U","D")
         player_id - opaque value to be stored in brick
         """
-        print('MOVE %r' % ch)
+        player_brick = self.bricks[player_id]
+        functions = {
+            'U': (player_brick.rotate, player_brick.rotate_back),
+            'L': (player_brick.move_left, player_brick.move_right),
+            'R': (player_brick.move_right, player_brick.move_left),
+            'D': (player_brick.move_up, player_brick.move_down),
+            }
+        if ch in functions:
+            do, do_back = functions[ch]
+            do(self.width)
+            if player_brick.is_collision_with_board(
+                    self.board, self.bricks, self.width, self.height):
+                do_back(self.width)
+
+        return True
 
     def tick(self):
         """Called each TICK_TIMEOUT."""
@@ -84,13 +130,11 @@ class Game(object):
                                self.get_board_size()[0],),
                               player_id, color)
                 self.bricks[player_id] = brick
-
         for player_id, brick in self.bricks.items():
-            brick.pos_y -= 1
-            if brick.pos_y <= 0:
-                del self.bricks[player_id]
+            if not self.move(player_id, 'D'):
                 self._freeze_brick(brick)
 
     def _freeze_brick(self, brick):
-        for pos in brick.to_box_list():
-            self.board[pos] = brick.color
+        print 'freeze', brick.to_box_list()
+        for box in brick.to_box_list():
+            self.board[box.pos] = box.color

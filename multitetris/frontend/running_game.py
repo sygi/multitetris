@@ -1,30 +1,37 @@
 import pygame
 from pygame.locals import *
-import socket
 import json
+import os
 
 from .common import consts, colors
+from . import connection
 
+
+########################
+# Globals
+########################
+
+mousex,mousey = 0,0
+cur_screen = 'GAME'
 SIZE = (consts.block_element_size, consts.block_element_size)
-
+no_of_players = 7
+fontObj = None
+players_names = ["Player 1", "Player 2", "Player 3", "Player 4",
+            "Player 5", "Player 6", "Player 7", "Player 8"]
 board_topleft = (22, 32)
 playersline_topleft = (20, 5)
 playersline_height = 20
+cur_connection = None
 
-pygame.init()
-#fontObj = pygame.font.Font("freesansbold.ttf", 10)
-fontObj = pygame.font.SysFont("arial", 17)
+########################
+# Drawing functions
+########################
 
-no_of_players = 7
-players_names = ["Player 1", "Player 2", "Player 3", "Player 4",
-            "Player 5", "Player 6", "Player 7", "Player 8"]
-
-def screen_pos(pos):
-    return (board_topleft[0] + pos[0] * SIZE[0],
-            board_topleft[1] + (consts.number_of_rows - pos[1] - 1) * SIZE[1])
-
-def read_state():
-    return json.loads(sockf.readline())
+def draw_menu(display):
+    """
+    Menu screen
+    """
+    pass
 
 def draw_box(display, color, screenpos):
     pygame.draw.rect(display, color,
@@ -60,6 +67,9 @@ def draw_main_grid(display):
         
 
 def draw_game(display):
+    """
+    Game screen
+    """
     draw_main_grid(display)
     state = read_state()
     print state
@@ -70,17 +80,87 @@ def draw_game(display):
         draw_box(display, brick['color'], pos + SIZE)
 
 
-def run():
-    global sock, sockf
-    sock = socket.socket()
-    sock.connect(('localhost', 9999))
-    sockf = sock.makefile('r+')
+def draw_about(display):
+    """
+    About screen
+    """
+    pass
 
+
+def draw_loading(display):
+    """
+    Loading screen
+    """
+    pass
+
+
+def draw_join(display):
+    """
+    Join screen
+    """
+    pass
+
+def draw(display):
+    """
+    Main draw function
+    """
+    if   cur_screen == 'MENU'   : draw_menu(display)
+    elif cur_screen == 'GAME'   : draw_game(display)
+    elif cur_screen == 'ABOUT'  : draw_about(display)
+    elif cur_screen == 'LOADING': draw_loading(display)
+    elif cur_screen == 'JOIN'   : draw_join(display)
+    else:
+        raise Exception('Unknown screen name!')
+    pass
+
+########################
+# Controls
+########################
+
+def on_key_LEFT():
+    if cur_connection:
+        cur_connection.move('L')
+
+def on_key_RIGHT():
+    if cur_connection:
+        cur_connection.move('R')
+
+def on_key_UP():
+    if cur_connection:
+        cur_connection.move('U')
+
+def on_key_DOWN():
+    if cur_connection:
+        cur_connection.move('D')
+
+########################
+# Helper functions
+########################
+
+def screen_pos(pos):
+    return (board_topleft[0] + pos[0] * SIZE[0],
+            board_topleft[1] + (consts.number_of_rows - pos[1] - 1) * SIZE[1])
+
+def read_state():
+    return json.loads(sockf.readline())
+
+
+########################
+# Main loop
+########################
+
+def run(addr="localhost"):
+
+    cur_connection = connection.Connection(addr)
+	
+	pygame.init()
     fps_clock = pygame.time.Clock()  # FPS limiter
 
+	fontObj = pygame.font.SysFont("arial", 17)
     display = pygame.display.set_mode((
         consts.window_width, consts.window_height))
     pygame.display.set_caption("Multitetris")
+    pygame.key.set_repeat(500, 500)  # (delay, interval) - how many KEYDOWN events when holding a key, in ms
 
     quit_request = False
 
@@ -95,13 +175,22 @@ def run():
             elif event.type == KEYDOWN:
                 if event.key == K_ESCAPE:
                     quit_request = True
+                elif event.key == K_LEFT:
+                    on_key_LEFT()
+                elif event.key == K_RIGHT:
+                    on_key_RIGHT()
+                elif event.key == K_UP:
+                    on_key_UP()
+                elif event.key == K_DOWN:
+                    on_key_DOWN()
 
-        draw_game(display)
+        draw(display)
 
         pygame.display.flip()
         fps_clock.tick(20)
 
     pygame.quit()
+    os._exit(0)
 
 if __name__ == '__main__':
     run()
