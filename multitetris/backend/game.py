@@ -68,7 +68,7 @@ class Game(object):
         '''
         Returns position of player with given id
         '''
-        return (self.player_numbers[player_id] - 1) * self.width_per_player
+        return (self.player_numbers[player_id].len() - 1) * self.width_per_player
 
     def look_for_full_lines(self):
         '''
