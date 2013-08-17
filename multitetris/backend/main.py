@@ -39,7 +39,11 @@ def client_writer(game, addr, sock):
             state = make_state(board=game.get_board(),
                                addr=addr,
                                game=game)
-        sock.sendall(json.dumps(state) + '\n')
+        try:
+            sock.sendall(json.dumps(state) + '\n')
+        except socket.error as e:
+            print 'Client dropped:', e
+            break
         with global_new_state_condition:
             global_new_state_condition.wait()
 
@@ -62,7 +66,11 @@ def client_reader(game, addr, sock):
     with global_lock:
         game.add_player(addr)
     while True:
-        move = sock.recv(1)
+        try:
+            move = sock.recv(1)
+        except socket.error as e:
+            print 'Client dropped:', e
+            break
         if not move:
             break
         with global_lock:
