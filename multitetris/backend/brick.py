@@ -81,5 +81,26 @@ class Brick(object):
         for box in new_box_list:
             if self.board.is_box_at(box.x,box.y):
                 return True
+                
+    def rotate(self):
+        self.self_state += 1
+        self.self_state %= 4
+    
+    def rotate_back(self):
+        self.self_state += 3
+        self.self_state %= 4
+        
+    def move_left(self):
+        self.pos_x -= 1
+        
+    def move_right(self):
+        self.pos_x += 1
+        
+    def move_down(self):
+        self.pos_y += 1
+        
+    def move_up(self):
+        self.pos_y -= 1
+        
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
