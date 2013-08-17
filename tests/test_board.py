@@ -33,6 +33,7 @@ class TestGame(unittest.TestCase):
 	def test_move_brick(self):
 		game = Game()
 		one_brick = Brick(Type.STAIR, (0, 2), 1, (1, 3, 2))
+		self.assertTrue(one_brick.pos_x == 1)
 		# starts with (1, 1)
 		game.bricks[1] = one_brick
 		game.move(1, 'R')
