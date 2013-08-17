@@ -88,6 +88,10 @@ class Brick(object):
                 for self_box in self_boxes:
                     if self_box.pos == box.pos:
                         return True
+        for box_pos in board.keys():
+			for self_box in self_boxes:
+				if self_box.pos == box_pos:
+					return True
         return False
 
 BoardBrick = collections.namedtuple('BoardBrick', 'pos color')
