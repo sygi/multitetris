@@ -21,7 +21,7 @@ class TestBrick(unittest.TestCase):
 		color = (3,2,1)
 		pos = (3,1)
 		brick = Brick(Type.LONG, pos, 2, color)
-		brick.rotate()
+		brick.rotate(10)
 		box_list = brick.to_box_list(100)
 		self.assertTrue(BoardBrick(pos=(5,1), color=color) in box_list)
 

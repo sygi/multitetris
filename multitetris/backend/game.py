@@ -82,18 +82,18 @@ class Game(object):
         player_id - opaque value to be stored in brick
         """
         player_brick = self.bricks[player_id]
-        function = {
+        functions = {
             'U': (player_brick.rotate, player_brick.rotate_back),
             'L': (player_brick.move_left, player_brick.move_right),
             'R': (player_brick.move_right, player_brick.move_left),
             'D': (player_brick.move_up, player_brick.move_down),
             }
-        if ch in function:
-            do, do_back = function[ch]
-            do()
+        if ch in functions:
+            do, do_back = functions[ch]
+            do(self.width)
             if player_brick.is_collision_with_board(
                     self.board, self.bricks, self.width, self.height):
-                do_back()
+                do_back(self.width)
 
         return True
 
