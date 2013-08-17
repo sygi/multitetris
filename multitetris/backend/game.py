@@ -79,17 +79,17 @@ class Game(object):
             player_brick.rotate()
             if player_brick.is_collision_with_board(self.board):
                 player_brick.rotate_back();
-        else if ch == 'L'
+        elif ch == 'L':
             player_brick.move_left()
-            if player_brick.is_collision_with_board(self.board)
+            if player_brick.is_collision_with_board(self.board):
                 player_brick.move_right()
-        else if ch == 'R'
+        elif ch == 'R':
             player_brick.move_right()
-            if player_brick.is_collision_with_board(self.board)
+            if player_brick.is_collision_with_board(self.board):
                 player_brick.move_left()
-        else if ch == 'D'
+        elif ch == 'D':
             player_brick.move_down()
-            if player_brick.is_collision_with_board(self.board)
+            if player_brick.is_collision_with_board(self.board):
                 player_brick.move_up()
         print('MOVE %r' % ch)
 
