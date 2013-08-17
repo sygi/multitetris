@@ -18,10 +18,10 @@ no_of_players = 7
 arial_font = None
 players_names = ["Player 1", "Player 2", "Player 3", "Player 4",
             "Player 5", "Player 6", "Player 7", "Player 8"]
-board_topleft = (22, 32)
+cur_connection = None
+board_topleft = (20, 30)
 playersline_topleft = (20, 5)
 playersline_height = 20
-cur_connection = None
 
 ########################
 # Drawing functions
@@ -37,28 +37,21 @@ def draw_box(display, color, screenpos):
     pygame.draw.rect(display, color,
                  (screenpos[0] + 1, screenpos[1] + 1) + (SIZE[0] - 1, SIZE[1] - 1), 0)
 
+def draw_nicelinebox(display, color, innertopleft, innersizes, thicknesses, offset = [0, 0]):
+    pygame.draw.rect(display, colors['line'],
+                (innertopleft[0] + offset[0] - thicknesses[0],
+                 innertopleft[1] + offset[1] - thicknesses[1],
+                 innersizes[0] + 2 * thicknesses[0],
+                 innersizes[1] + 2 * thicknesses[1]
+                ), 2)
+
 def draw_main_grid(display):
     # board
-    pygame.draw.rect(display, colors['line'],
-                (board_topleft[0] - 2,
-                 board_topleft[1] - 2,
-                 consts.columns_per_player * SIZE[0] * no_of_players + 4,
-                 consts.number_of_rows * SIZE[1] + 4
-                ), 2)
-    # players_line
-    pygame.draw.rect(display, colors['line'],
-                (playersline_topleft[0],
-                 playersline_topleft[1],
-                 consts.columns_per_player * SIZE[0] * no_of_players + 4,
-                 25
-                ), 2)
+    draw_nicelinebox(display, colors['line'], board_topleft,
+                [consts.columns_per_player * SIZE[0] * no_of_players, consts.number_of_rows * SIZE[1]], [2, 2])
     for i in range(no_of_players):
-        pygame.draw.rect(display, colors['line'],
-                (playersline_topleft[0] + 1 + consts.columns_per_player * SIZE[0] * i,
-                 playersline_topleft[1] + 2,
-                 2,
-                 25
-                ), 1)
+        draw_nicelinebox(display, colors['line'], playersline_topleft,
+                [consts.columns_per_player * SIZE[0] - 3, 22], [2, 2], [consts.columns_per_player * SIZE[0] * i, 0])
         text_surface = arial_font.render(players_names[i], False, colors['text'])
         text_rect = text_surface.get_rect()
         text_rect.topleft = (playersline_topleft[0] + 5 + consts.columns_per_player * SIZE[0] * i + 10,
@@ -70,16 +63,17 @@ def draw_game(display):
     """
     Game screen
     """
-    global cur_connection
-    if not cur_connection.state:
-        return
-    draw_main_grid(display)
-    print cur_connection.state
     
-    for brick in cur_connection.state['bricks']:
-        pos = screen_pos(brick['pos'])
-        print pos + SIZE, brick['color']
-        draw_box(display, brick['color'], pos + SIZE)
+    draw_main_grid(display)
+    
+    # process data from server and show bricks
+    global cur_connection
+    print cur_connection.state
+    if cur_connection.state:
+        for brick in cur_connection.state['bricks']:
+            pos = screen_pos(brick['pos'])
+            print pos + SIZE, brick['color']
+            draw_box(display, brick['color'], pos + SIZE)
 
 
 def draw_about(display):
@@ -141,7 +135,7 @@ def on_key_DOWN():
 
 def screen_pos(pos):
     return (board_topleft[0] + pos[0] * SIZE[0],
-            board_topleft[1] + (consts.number_of_rows - pos[1] - 1) * SIZE[1])
+            board_topleft[1] + (consts.number_of_rows - pos[1] - 1) * SIZE[1] + 800)
 
 ########################
 # Main loop
