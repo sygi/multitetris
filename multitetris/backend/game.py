@@ -22,7 +22,7 @@ class Game(object):
         self.next_player_pos = 1
 
         self.width_delta = 15 # It can be changed later
-        self.width = 0
+        self.width = 10
         self.height = 40
 
     def add_player(self, player_id):
@@ -73,6 +73,31 @@ class Game(object):
         '''
         return self.player_pos[player_id]
 
+    def look_for_full_lines(self):
+        '''
+        Checks whether there are any full lines,
+        removes them and returns number of such lines
+        '''
+        removed_rows = 0
+        (height, width) = self.get_board_size()
+        for row in range(0, height-1):
+            full_line = True
+            #The method examines boxes on the board one by one
+            for column in range(0, width-1):
+                if (column, row) not in board:
+                    full_line = False
+                else:
+                    #If any rows were removed, the box is moved down
+                    color = board[(column, row)]
+                    del board[(column, row)]
+                    board[(column, row - removed_rows)] = color
+            #If full line was found, all boxes it contains are removed
+            if full_line == True:
+                for column in range(0, width-1):
+                    del board[(column - remowed_rows, row)]
+                removed_rows += 1
+        return removed_rows
+
     def move(self, player_id, ch):
         """
         Called when client requests his brick to move.
@@ -81,18 +106,18 @@ class Game(object):
         player_id - opaque value to be stored in brick
         """
         player_brick = self.bricks[player_id]
-        function = {
+        functions = {
             'U': (player_brick.rotate, player_brick.rotate_back),
             'L': (player_brick.move_left, player_brick.move_right),
             'R': (player_brick.move_right, player_brick.move_left),
             'D': (player_brick.move_up, player_brick.move_down),
             }
-        if ch in function:
-            do, do_back = function[ch]
-            do()
+        if ch in functions:
+            do, do_back = functions[ch]
+            do(self.width)
             if player_brick.is_collision_with_board(
                     self.board, self.bricks, self.width, self.height):
-                do_back()
+                do_back(self.width)
 
         return True
 

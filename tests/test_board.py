@@ -21,7 +21,7 @@ class TestBrick(unittest.TestCase):
 		color = (3,2,1)
 		pos = (3,1)
 		brick = Brick(Type.LONG, pos, 2, color)
-		brick.rotate()
+		brick.rotate(10)
 		box_list = brick.to_box_list(100)
 		self.assertTrue(BoardBrick(pos=(5,1), color=color) in box_list)
 
@@ -35,7 +35,6 @@ class TestGame(unittest.TestCase):
 		one_brick = Brick(Type.STAIR, (0, 2), 1, (1, 3, 2))
 		# starts with (1, 1)
 		game.bricks[1] = one_brick
-		print one_brick.pos_x, one_brick.pos_y
 		game.move(1, 'R')
 		self.assertTrue(one_brick.pos_x == 2)
 		game.move(1, 'L')
