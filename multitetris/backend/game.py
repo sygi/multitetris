@@ -37,7 +37,6 @@ class Game(object):
 
         self.player_pos[player_id] = self.next_player_pos
         self.next_player_pos += 5
-        self.next_player_pos %= self.get_board_size()[0]
 
         self.width += self.width_delta
 
@@ -73,6 +72,31 @@ class Game(object):
         Returns player position
         '''
         return self.player_pos[player_id]
+
+    def look_for_full_lines(self):
+        '''
+        Checks whether there are any full lines,
+        removes them and returns number of such lines
+        '''
+        removed_rows = 0
+        (height, width) = self.get_board_size()
+        for row in range(0, height-1):
+            full_line = True
+            #The method examines boxes on the board one by one
+            for column in range(0, width-1):
+                if (column, row) not in board:
+                    full_line = False
+                else:
+                    #If any rows were removed, the box is moved down
+                    color = board[(column, row)]
+                    del board[(column, row)]
+                    board[(column, row - removed_rows)] = color
+            #If full line was found, all boxes it contains are removed
+            if full_line == True:
+                for column in range(0, width-1):
+                    del board[(column - remowed_rows, row)]
+                removed_rows += 1
+        return removed_rows
 
     def move(self, player_id, ch):
         """
