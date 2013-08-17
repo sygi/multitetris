@@ -22,9 +22,12 @@ def main(game, bindto):
     sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
     sock.bind(bindto)
     sock.listen(3)
+    to_print = map(str, bindto)
+    print "Server socket listening on (%s, %s)" % tuple(to_print)
     threading.Thread(target=ticker, args=[game]).start()
     while True:
         client_sock, addr = sock.accept()
+        print "Server accepted connection from client"
 
         threading.Thread(target=client_reader, args=[game, addr, client_sock]).start()
         threading.Thread(target=client_writer, args=[game, addr, client_sock]).start()
