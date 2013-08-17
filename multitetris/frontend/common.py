@@ -1,5 +1,3 @@
-from pygame import Color
-
 """
 Usage:
 
@@ -9,6 +7,8 @@ from common import consts as frontend_consts
 
 and so on.
 """
+
+from pygame import Color
 
 class consts:
     pass
