@@ -75,8 +75,10 @@ def client_reader(game, addr, sock):
             print 'Client dropped:', e
             break
         if not move:
+            print "not move case, from:", addr
             break
         with global_lock:
+            print "move instruction received:", addr, move
             game.move(addr, move)
 
 

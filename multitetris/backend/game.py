@@ -107,6 +107,10 @@ class Game(object):
         ch - passed from frontent ("L","R","U","D")
         player_id - opaque value to be stored in brick
         """
+        if player_id not in self.bricks.keys():
+            # if there was no active brick and the player moves (or we just receive his packet),
+            # the thread would crash
+            return False
         player_brick = self.bricks[player_id]
         functions = {
             'U': (player_brick.rotate, player_brick.rotate_back),
@@ -135,7 +139,7 @@ class Game(object):
                               player_id, color)
                 self.bricks[player_id] = brick
         for player_id, brick in self.bricks.items():
-            print 'brick.pos', brick.pos
+            #print 'brick.pos', brick.pos
             if not self.move(player_id, 'D'):
                 self._freeze_brick(brick)
                 del self.bricks[player_id]

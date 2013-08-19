@@ -14,13 +14,13 @@ from . import connection
 mousex,mousey = 0,0
 cur_screen = 'GAME'
 block_size = (consts.block_element_size, consts.block_element_size)
-no_of_players = 7
+no_of_players = 1 # cheats will happen
 arial_font = None
 players_names = ["Player 1", "Player 2", "Player 3", "Player 4",
             "Player 5", "Player 6", "Player 7", "Player 8"]
 cur_connection = None
 board_topleft = (20, 30)
-playersline_topleft = (20, 5)
+playersline_topleft = (20+1, 5)
 playersline_height = 20
 
 ########################
@@ -67,11 +67,15 @@ def draw_game(display):
     draw_main_grid(display)
     
     # process data from server and show bricks
-    global cur_connection
-    print "CURRENT CONNECTION STATE:"
-    print cur_connection.state
+    global cur_connection, no_of_players
+    #print "CURRENT CONNECTION STATE:"
+    #print cur_connection.state
     if cur_connection.state:
         for brick in cur_connection.state['bricks']:
+            # cheat, trying to get a number of players / size of the board
+            while brick['pos'][0] % (no_of_players * consts.columns_per_player) < brick['pos'][0]:
+                no_of_players += 1
+            # end of the cheat, it should be changed
             pos = screen_pos(brick['pos'])
             draw_box(display, brick['color'], pos)
 
