@@ -8,6 +8,7 @@ class Game(object):
     def __init__(self):
         # Dictionary mapping position on the board to color
         # (contains only non-moving boxes)
+        random.seed()
         self.board = {}
         # Dictionary mapping player_id to actually moving brick of that player
         self.bricks = {}
@@ -26,10 +27,10 @@ class Game(object):
         Called when player connects.
         - player_id - opaque value
         """
-        self.players_points[player_id] = 0
+        #self.players_points[player_id] = 0
         self.players_numbers[player_id] = self.next_player_number
         self.next_player_number += 1
-        self.width = players_points.len() * width_per_player
+        #self.width = players_points.len() * width_per_player
 
     def _freeze_brick(self, brick):
         print 'freeze', brick.to_box_list(self.width)
@@ -67,8 +68,9 @@ class Game(object):
         '''
         Returns position of player with given id
         '''
-        #return (self.players_numbers[player_id] - 1) * self.width_per_player
+        print "blabla %d" % (self.players_numbers[player_id]) * self.width_per_player
         return (self.players_numbers[player_id]) * self.width_per_player # first player_id is 0, not 1, so why subtract 1?
+        #what the f* is going on here?
 
     def look_for_full_lines(self):
         '''
@@ -122,7 +124,7 @@ class Game(object):
     def tick(self):
         """Called each TICK_TIMEOUT."""
         for player_id in self.players_points.keys():
-            color = (128, 0, 128) # needs to be changed
+            color = (random.randrange(256), random.randrange(256), random.randrange(256)) # needs to be changed
             if player_id not in self.bricks:
                 brick = Brick(random.randint(0,4),
                               (self.get_player_position(player_id),
