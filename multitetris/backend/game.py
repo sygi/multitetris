@@ -24,13 +24,13 @@ class Game(object):
 
     def add_player(self, player_id):
         """
-        Called when player connects.
+        Called when player connects.client_read
         - player_id - opaque value
         """
-        #self.players_points[player_id] = 0
+        self.players_points[player_id] = 0
         self.players_numbers[player_id] = self.next_player_number
         self.next_player_number += 1
-        #self.width = players_points.len() * width_per_player
+        self.width = players_points.len() * width_per_player
 
     def _freeze_brick(self, brick):
         print 'freeze', brick.to_box_list(self.width)
