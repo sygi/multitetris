@@ -18,7 +18,8 @@ class Game(object):
         self.width_per_player = 10 # It can be changed later
 
         self.players_numbers = {}
-        self.next_player_number = 0
+        #self.next_player_number = 0
+        self.number_of_players = 0
         self.players_points = {}
         self.points_delta = 100 # It can be changed later, too
 
@@ -27,10 +28,11 @@ class Game(object):
         Called when player connects.
         - player_id - opaque value
         """
-        #self.players_points[player_id] = 0
-        self.players_numbers[player_id] = self.next_player_number
-        self.next_player_number += 1
-        #self.width = players_points.len() * width_per_player
+        self.players_points[player_id] = 0
+        self.players_numbers[player_id] = self.number_of_players
+        self.number_of_players += 1
+        self.width = self.number_of_players * self.width_per_player
+        print "new player!", "number_of_players:", self.number_of_players, "board width:", self.width
 
     def _freeze_brick(self, brick):
         print 'freeze', brick.to_box_list(self.width)
@@ -68,9 +70,10 @@ class Game(object):
         '''
         Returns position of player with given id
         '''
-        print "blabla %d" % (self.players_numbers[player_id]) * self.width_per_player
-        return (self.players_numbers[player_id]) * self.width_per_player # first player_id is 0, not 1, so why subtract 1?
+        #print "blabla %d" % (self.players_numbers[player_id]) * self.width_per_player
+        return (self.players_numbers[player_id]) * self.width_per_player + self.width_per_player / 2 - 2
         #what the f* is going on here?
+        # should work now
 
     def look_for_full_lines(self):
         '''
