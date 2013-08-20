@@ -62,8 +62,11 @@ class Game(object):
 
     def get_points(self):
         '''
-        No one knows what happens here
+        #No one knows what happens here
+        #Returns dictionary mapping players' ids to their points
+            NOPE, because returning self.players_points causes error in json.dumps(state)
         '''
+        #return self.players_points;
         return {'127.0.0.1': 300, 'localhost': 150}
 
     def get_player_position(self, player_id):
@@ -80,24 +83,44 @@ class Game(object):
         Checks whether there are any full lines,
         removes them and returns number of such lines
         '''
+        #(height, width) = self.get_board_size()
+        #count_per_line = [0] * height
+        #for box in self.board.keys():
+        #    count_per_line[box[1]] += 1
+        #    # ...
+        # I think it should be reworked in the way as above
+
         removed_rows = 0
-        (height, width) = self.get_board_size()
-        for row in range(0, height-1):
+        (width, height) = self.get_board_size()
+        for row in range(height):
             full_line = True
             # The method examines boxes on the board one by one
-            for column in range(0, width-1):
-                if (column, row) not in board:
+            for column in range(width):
+                if (column, row) not in self.board:
                     full_line = False
                 else:
                     # If any rows were removed, the box is moved down
-                    color = board[(column, row)]
-                    del board[(column, row)]
-                    board[(column, row - removed_rows)] = color
+                    color = self.board[(column, row)]
+                    del self.board[(column, row)]
+                    #self.board[(column, row - removed_rows)] = color
+                    self.board[(column, row)] = color
             # If full line was found, all boxes it contains are removed
             if full_line == True:
-                for column in range(0, width-1):
-                    del board[(column - remowed_rows, row)]
+                for column in range(width):
+                    #del self.board[(column, row - removed_rows)]
+                    del self.board[(column, row)]
                 removed_rows += 1
+                # full palowanie-fix
+                board1 = {}
+                for row1 in range(row):
+                    for col1 in range(width):
+                        if (col1, row1) in self.board:
+                            color1 = self.board[(col1, row1)]
+                            del self.board[(col1, row1)]
+                            board1[(col1, row1+1)] = color1
+                for boxkey in board1.keys():
+                    self.board[boxkey] = board1[boxkey]
+        #print "BOARD", self.board
         return removed_rows
 
     def move(self, player_id, ch):
@@ -108,7 +131,7 @@ class Game(object):
         player_id - opaque value to be stored in brick
         """
         if player_id not in self.bricks.keys():
-            # if there was no active brick and the player moves (or we just receive his packet),
+            # if there was no active brick and the player moved (or we just received his packet),
             # the thread would crash
             return False
         player_brick = self.bricks[player_id]
@@ -143,3 +166,7 @@ class Game(object):
             if not self.move(player_id, 'D'):
                 self._freeze_brick(brick)
                 del self.bricks[player_id]
+                new_full_lines_number = self.look_for_full_lines();
+                #print "!!! FULL_LINE !!!", new_full_lines_number
+                self.players_points[player_id] += self.points_delta * new_full_lines_number
+                print 'players_points: ', self.players_points
