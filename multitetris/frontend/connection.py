@@ -26,6 +26,7 @@ class Connection(object):
             self.state = json.loads(line)
 
     def move(self, move):
+        print "sendall(", move, ")"
         threading.Thread(target=
                          lambda: self.sock.sendall(move)).start()
 
